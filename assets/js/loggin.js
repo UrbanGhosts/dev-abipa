@@ -1,12 +1,12 @@
 $("#enter").on("click", function () {
-	
+
 	var name = $("#username").val();
 	var password = $("#password").val();
 	
 	$.ajax({
-		//url: 'assets/js/test.php',
-		url: 'assets/js/test/searching',
-		type: 'POST',
+		url: 'assets/js/test.php',
+		//url: 'assets/js/test1.js',
+		type: 'GET',
 		cache: false,
 		data: { 'name': name, 'password': password },
 		dataType: 'text',
