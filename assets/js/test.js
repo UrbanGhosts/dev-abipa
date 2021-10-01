@@ -7,7 +7,7 @@ server.on('request', (req, res) => {
 
 server.listen (3000, () => console.log ('Сервер работает'));
 
-app.post('/searching', function(req, res){
+app.get('/searching', function(req, res){
  //do something with req
  alert('ok');
 });

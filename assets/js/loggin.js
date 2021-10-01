@@ -6,7 +6,7 @@ $("#enter").on("click", function () {
 	$.ajax({
 		//url: 'assets/js/test.php',
 		url: '/searching',
-		type: 'POST',
+		type: 'GET',
 		cache: false,
 		data: { 'name': name, 'password': password },
 		dataType: 'text',
@@ -15,8 +15,9 @@ $("#enter").on("click", function () {
         },
 		success: function (data) {
 			window.console.log("success: " + data);
-
 			$("#enter").prop('disabled', false);
+			return;
+
 			var href = window.location.href;
 			href = href.split("index")[0];
 			href = href.replace('#', '');
