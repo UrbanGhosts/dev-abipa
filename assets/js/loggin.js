@@ -15,7 +15,8 @@ $("#enter").on("click", function () {
         },
 		success: function (data) {
 			window.console.log("success: " + data);
-			
+
+			$("#enter").prop('disabled', false);
 			var href = window.location.href;
 			href = href.split("index")[0];
 			href = href.replace('#', '');
