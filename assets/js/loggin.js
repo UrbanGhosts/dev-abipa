@@ -5,7 +5,7 @@ $("#enter").on("click", function () {
 	
 	$.ajax({
 		url: 'assets/js/test.php',
-		type: 'GET',
+		type: 'POST',
 		cache: false,
 		//data: { 'name': name, 'password': password },
 		dataType: 'text',
@@ -21,6 +21,9 @@ $("#enter").on("click", function () {
 			href = href.split("index")[0];
 			href = href.replace('#', '');
 			window.location.href = href + "workpage.html";
+		},
+		done: function (data) {
+			window.console.log("Data Saved: " + data);
 		},
 		error: function (data) {
 			window.console.log(data.status + ": " + data.statusText);
