@@ -1,0 +1,50 @@
+﻿<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Abipa</title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="assets/css/style2.css" />
+	</head>
+	<body>
+		<div class="container">
+			<label id="t-comp3" class="t-label login-label-smallCaption">Заявки</label>
+			<label id="t-comp4" class="t-work-label">личный кабинет</label>
+		</div>
+		<div class="block">
+			<input type="submit" id="addOrder" name="addOrder" value="Добавить">
+
+			<div id="table" class="block-table">
+				<table>
+					<tr>
+						<th>Номер</th>
+						<th>Стадия</th>
+						<th>Дата создания</th>
+						<th>Дата закрытия</th>
+					</tr>
+					<tr>
+						<td>R1234/21</td>
+						<td>Согласование</td>
+						<td>05.08.2021</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>RA2164/21</td>
+						<td>Закрыта</td>
+						<td>18.03.2021</td>
+						<td>20.03.2021</td>
+					</tr>
+				</table>
+			</div>
+			<input type="text" id="input1" class="t-input-label" name="username" placeholder="Маршрут">
+			<input type="text" id="input2" class="t-input-label" name="username" placeholder="Описание груза">
+			<input type="text" id="input3" class="t-input-label" name="username" placeholder="Стоимость груза">
+			<input type="text" id="input4" class="t-input-label" name="username" placeholder="Валюта груза">
+			<input type="text" id="input5" class="t-input-label" name="username" placeholder="Комментарии">
+
+			<input type="submit" id="createOrder" name="createOrder" class="dws-create" value="Создать">
+		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script src="assets/js/addOrder.js"></script>
+</body>
+</html>

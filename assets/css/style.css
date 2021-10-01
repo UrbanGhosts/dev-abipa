@@ -1,0 +1,80 @@
+body{
+	margin: 0;
+	font-family: 'Montserrat', sans-serif;
+	
+	font-size: 15px;
+	line-height: 1.6;
+	color: #333;
+	
+	background: url("../images/background.jpg") center;
+	-webkit-background-size: cover;
+	background-size: cover;
+}
+
+h1, h2, h3{
+	margin: 0;
+}
+
+.container {
+	background: #fff;
+	width: 500px;
+	height: 400px;
+	/* тень под блоком */
+	box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+	/* сглаживание углов блока */
+	border-radius: 15px;
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%)
+}
+
+.container img{
+	width: 0 auto;
+	height: 0 auto;
+}
+
+.logo{
+	width: 50%;
+	height: 10vh;
+	margin: 0px auto;
+	background: url("../images/abipa-logo.png") center no-repeat;
+	-webkit-background-size: cover;
+	background-size: cover;
+}
+
+.login-label-smallCaption {
+    color: black;
+}
+
+.t-label {
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+    font-size: 1.2em;
+}
+
+.dws-login {
+	margin: 0 0 0 75px;
+}
+
+input[type="submit"] {
+	padding: 13px 30px;
+	margin: 5px 0 20px 0;
+	font-size: 15px;
+	color: #fff;
+	background-color: green;
+	border: none;
+	border-bottom: 4px solid #2ee640;
+	cursor: pointer;
+}
+
+input[type="text"], input[type="password"]{
+	width: 300px;
+	height: 25px;
+	font-size: 16px;
+	margin-bottom: 25px;
+	padding-left: 10px;
+}
