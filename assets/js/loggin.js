@@ -6,7 +6,7 @@ $("#enter").on("click", function () {
 	$.ajax({
 		//url: 'assets/js/test.php',
 		url: 'assets/js/test/searching',
-		type: 'GET',
+		type: 'POST',
 		cache: false,
 		data: { 'name': name, 'password': password },
 		dataType: 'text',
