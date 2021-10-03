@@ -5,9 +5,10 @@ $("#enter").on("click", function () {
 	
 	$.ajax({
 		url: 'assets/js/test.php',
-		type: 'GET',
+		type: 'POST',
 		cache: false,
-		//data: { 'name': name, 'password': password },
+		async: true,
+		data: { 'name': name, 'password': password },
 		dataType: 'text',
 		beforeSend: function () {
 			$("#enter").prop('disabled', true);
@@ -15,8 +16,7 @@ $("#enter").on("click", function () {
 		success: function (data) {
 			window.console.log("success: " + data);
 			$("#enter").prop('disabled', false);
-			return;
-
+			
 			var href = window.location.href;
 			href = href.split("index")[0];
 			href = href.replace('#', '');
