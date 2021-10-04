@@ -11,6 +11,76 @@ body{
 	background-size: cover;
 }
 
+
+.block-form-country {    
+	display: block;
+	height:34px;
+	width:160px;
+	background: gray;        
+	position: relative;
+	top: 10px;
+	left: 10px;
+	border-radius: 5px 5px 5px 5px;
+}
+
+.block-form-cargo {    
+	display: block;
+	height:34px;
+	width:160px;
+	background: gray;        
+	position: relative;
+	top: -30px;
+	left: 10px;
+	border-radius: 5px 5px 5px 5px;
+}
+
+.t-block-form {    
+	color: white;
+	font-weight: bold;
+	margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+.block-from {    
+	margin: 0 auto;
+	position: relative;
+	top: 10px;
+	left: 20px;
+}
+
+.block-form-units {    
+	margin: 0 auto;
+	position: relative;
+	top: -10px;
+	left: 20px;
+}
+
+.t-input-units {
+	width: 65px;
+	height: 35px;
+	margin: 0px auto;
+	position: relative;
+	font-size: 1.2em;
+	padding-left: 15px;
+}
+
+.block-to {    
+	margin: 0 auto;
+	position: relative;
+	top: -92px;
+	left: 360px;
+}
+
+.t-block-description {    
+	color: black;
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
 .t-input-label {
 	display: none;
 	width: 1220px;
@@ -117,4 +187,11 @@ input[type="submit"] {
 	position: relative;
 	top: 10px;
 	left: 10px;
+}
+
+input[id="counry-To"], [id="counry-From"] {
+	padding: 10px 5px;
+	font-size: 18px;
+	border: solid 1px gray;//обводка
+	border-radius: 5px 5px 5px 5px;
 }
