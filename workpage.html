@@ -8,103 +8,107 @@
 	</head>
 	<body>
 		<div class="container">
-			<label id="t-comp3" class="t-label login-label-smallCaption">Заявки</label>
-			<label id="t-comp4" class="t-work-label">личный кабинет</label>
+			<label id="t-comp3" class="t-label login-label-smallCaption">Orders</label>
+			<label id="t-comp4" class="t-work-label">Personal cabinet</label>
 		</div>
 		<div class="block">
-			<input type="submit" id="addOrder" name="addOrder" value="Добавить">
+			<input type="submit" id="addOrder" name="addOrder" value="Add">
 
 			<div id="table" class="block-table">
 				<table>
 					<tr>
-						<th>Номер</th>
-						<th>Стадия</th>
-						<th>Дата создания</th>
-						<th>Дата закрытия</th>
+						<th>Number</th>
+						<th>Status</th>
+						<th>Create on</th>
+						<th>Closing date</th>
 					</tr>
 					<tr>
 						<td>R1234/21</td>
-						<td>Согласование</td>
+						<td>Created</td>
 						<td>05.08.2021</td>
 						<td></td>
 					</tr>
 					<tr>
 						<td>RA2164/21</td>
-						<td>Закрыта</td>
+						<td>Closed</td>
 						<td>18.03.2021</td>
 						<td>20.03.2021</td>
 					</tr>
 				</table>
 			</div>
-			
-			<!-- Добавить сокрытие в появление формы -->
-			<div class="block-form-country">
-				<label id="t-comp6" class="t-block-form">Transportation route</label>
-			</div>
-			<div class="block-from">
-				<p>
+
+
+			<div class="form-class" id="form-class">
+				<!-- Добавить сокрытие в появление формы -->
+				<div class="block-form-country">
+					<label id="t-comp6" class="t-block-form">Transportation route</label>
+				</div>
+				<div class="block-from">
+					<p>
 					<p>
 						<label id="t-comp7" class="t-block-description">From</label>
 					</p>
-					<input type="text" id="counry-From" list="counryFrom"  placeholder="Origin Airport"/>
+					<input type="text" id="counry-From" list="counryFrom" placeholder="Origin Airport" />
 					<datalist id="counryFrom">
-					  <option>Russia</option>
-					  <option>Litva</option>
-					  <option>France</option>
-					  <option>Germany</option>
+						<option>Russia</option>
+						<option>Litva</option>
+						<option>France</option>
+						<option>Germany</option>
 					</datalist>
-				</p>
-			</div>
-			<div class="block-to">
-				<p>
+					</p>
+				</div>
+				<div class="block-to">
+					<p>
 					<p>
 						<label id="t-comp8" class="t-block-description">To</label>
 					</p>
-					<input type="text" id="counry-To" list="counryTo"  placeholder="Destination Airport"/>
+					<input type="text" id="counry-To" list="counryTo" placeholder="Destination Airport" />
 					<datalist id="counryTo">
-					  <option>Russia</option>
-					  <option>Litva</option>
-					  <option>France</option>
-					  <option>Germany</option>
+						<option>Russia</option>
+						<option>Litva</option>
+						<option>France</option>
+						<option>Germany</option>
 					</datalist>
-				</p>
+					</p>
+				</div>
+
+				<div class="block-form-cargo">
+					<label id="t-comp9" class="t-block-form">Cargo details</label>
+				</div>
+				<div class="block-form-units">
+					<label id="t-comp10" class="t-block-description">Units</label>
+					<label id="t-comp11" class="t-block-description" style='padding-left:100px;'>Dimensions</label>
+					<label id="t-comp12" class="t-block-description" style='padding-left:300px;'>Package Type</label>
+					<label id="t-comp13" class="t-block-description" style='padding-left:100px;'>Weight</label>
+					<label id="t-comp14" class="t-block-description" style='padding-left:200px;'>Price</label>
+					<p>
+						<input type="number" id="unit" class="t-input-units" name="unit" min="0" value="0">
+						<input type="number" id="length" class="t-input-units" style='left:60px;width: 75px;' step=".01" min="0" name="length" placeholder="Length">
+						<input type="number" id="width" class="t-input-units" style='left:55px;width: 75px;' step=".01" min="0" name="width" placeholder="Width">
+						<input type="number" id="height" class="t-input-units" style='left:49px;width: 75px;' step=".01" min="0" name="height" placeholder="Height">
+						<select name="cm" id="cm" class="t-input-units" style='left: 44px; height: 41px; padding-left: 10px; top: 0.5px' value='CM'>
+							<option value="CM">CM</option>
+							<option value="IN">IN</option>
+						</select>
+						<select name="box" id="box" class="t-input-units" style='left: 95px; height: 41px; padding-left: 10px; width: 175px; top: 0.5px' value='Boxes/Crates'>
+							<option value="Boxes/Crates">Boxes/Crates</option>
+							<option value="Pallets">Pallets</option>
+						</select>
+						<input type="number" id="weight" class="t-input-units" style='left:140px;' step=".01" min="0" name="weight" value="0">
+						<select name="box" id="box" class="t-input-units" style='left: 135px; height: 41px; padding-left: 10px; width: 105px; top: 0.5px' value='KG/Unit'>
+							<option value="KG/Unit">KG/Unit</option>
+							<option value="LB/Unit">LB/Unit</option>
+						</select>
+						<input type="number" id="price" class="t-input-units" style='left:205px;' name="price" value="0">
+					</p>
+				</div>
+
+				<div class="block-form-cargo" style='top:10px;'>
+					<label id="t-comp15" class="t-block-form">Last\First Mile</label>
+				</div>
+				<!-- End Добавить сокрытие в появление формы -->
 			</div>
-			
-			<div class="block-form-cargo">
-				<label id="t-comp9" class="t-block-form">Cargo details</label>
-			</div>
-			<div class="block-form-units">
-				<label id="t-comp10" class="t-block-description">Units</label>
-				<label id="t-comp11" class="t-block-description" style='padding-left:100px;'>Dimensions</label>
-				<label id="t-comp12" class="t-block-description" style='padding-left:300px;'>Package Type</label>
-				<label id="t-comp13" class="t-block-description" style='padding-left:100px;'>Weight</label>
-				<label id="t-comp14" class="t-block-description" style='padding-left:200px;'>Price</label>
-				<p>
-					<input type="number" id="unit" class="t-input-units" name="unit" min="0" value="0">
-					<input type="number" id="length" class="t-input-units" style='left:60px;width: 75px;' step=".01" min="0" name="length" placeholder="Length">
-					<input type="number" id="width" class="t-input-units" style='left:55px;width: 75px;' step=".01" min="0" name="width" placeholder="Width">
-					<input type="number" id="height" class="t-input-units" style='left:50px;width: 75px;' step=".01" min="0" name="height" placeholder="Height">
-					<select name="cm" id="cm" class="t-input-units" style='left:45px;height:40.5px;padding-left: 10px;' value='CM'>
-					  <option value="CM">CM</option>
-					  <option value="IN">IN</option>
-					</select>
-					<select name="box" id="box" class="t-input-units" style='left:95px;height:40.5px;padding-left: 10px;width: 175px;' value='Boxes/Crates'>
-					  <option value="Boxes/Crates">Boxes/Crates</option>
-					  <option value="Pallets">Pallets</option>
-					</select>
-					<input type="number" id="weight" class="t-input-units" style='left:140px;' step=".01" min="0" name="weight" value="0">
-					<select name="box" id="box" class="t-input-units" style='left:135px;height:40.5px;padding-left: 10px;width: 105px;' value='KG/Unit'>
-					  <option value="KG/Unit">KG/Unit</option>
-					  <option value="LB/Unit">LB/Unit</option>
-					</select>
-					<input type="number" id="price" class="t-input-units" style='left:205px;' name="price" value="0">
-				</p>
-			</div>
-			
-			<div class="block-form-cargo" style='top:10px;'>
-				<label id="t-comp15" class="t-block-form">Last\First Mile</label>
-			</div>
-			<!-- End Добавить сокрытие в появление формы -->
+
 			<!--
 			<input type="text" id="input1" class="t-input-label" name="username" placeholder="Маршрут">
 			<input type="text" id="input2" class="t-input-label" name="username" placeholder="Описание груза">

@@ -5,20 +5,8 @@ $("#addOrder").on("click", function () {
 	button.style.display = 'none';
 	table.style.display = 'none';
 
-	let input1 = document.getElementById("input1");
+	let input1 = document.getElementById("form-class");
 	input1.style.display = "block";
-
-	let input2 = document.getElementById("input2");
-	input2.style.display = "block";
-
-	let input3 = document.getElementById("input3");
-	input3.style.display = "block";
-
-	let input4 = document.getElementById("input4");
-	input4.style.display = "block";
-
-	let input5 = document.getElementById("input5");
-	input5.style.display = "block";
 
 	let createButton = document.getElementById("createOrder");
 	createButton.style.display = 'block';
@@ -31,20 +19,42 @@ $("#createOrder").on("click", function () {
 	let table = document.getElementById("table");
 
 	createButton.style.display = 'none';
-	let input1 = document.getElementById("input1");
+	let input1 = document.getElementById("form-class");
 	input1.style.display = "none";
-	let input2 = document.getElementById("input2");
-	input2.style.display = "none";
-	let input3 = document.getElementById("input3");
-	input3.style.display = "none";
-	let input4 = document.getElementById("input4");
-	input4.style.display = "none";
-	let input5 = document.getElementById("input5");
-	input5.style.display = "none";
 
+	//TODO
 	table.style.display = 'block';
 	addButton.style.display = 'block';
 	addButton.style.top = "10px";
 	addButton.style.left = "10px";
 	addButton.style.position = "relative";
 });
+
+//Событие "Изменения поля unit"
+$("#unit").on("click", function () {
+	calculated();
+});
+unit.onblur = function () {
+	calculated();
+};
+
+//Событие "Изменения поля weight"
+$("#weight").on("click", function () {
+	calculated();
+});
+weight.onblur = function () {
+	calculated();
+};
+
+calculated = function(){
+	let unit = document.getElementById("unit").value;
+	let width = document.getElementById("weight").value;
+	if (!width || width == 0) {
+		width = 1;
+	}
+	let price = document.getElementById("price");
+
+	price.value = (unit * 100) * width;
+	return true;
+}
+

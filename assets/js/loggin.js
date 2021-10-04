@@ -15,6 +15,7 @@ $("#enter").on("click", function () {
 		success: function (data) {
 			var href = window.location.href;
 			href = href.split("index")[0];
+			href = href.replace("#", '');
 			window.location.href = href + "workpage.html";
 		},
 		error: function (data) {
