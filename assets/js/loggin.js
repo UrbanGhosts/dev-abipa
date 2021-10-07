@@ -4,48 +4,27 @@ $("#enter").on("click", function () {
 	var password = $("#password").val();
 	
 	$.ajax({
-		url: 'assets/js/test.js',
+		url: '/loggin',
+		//url: '/assets/js/test.js',
 		type: 'GET',
 		cache: false,
-		//data: { 'name': name, 'password': password },
+		data: { 'name': name, 'password': password },
 		//headers: {'Token_value': 123},
 		dataType: 'text',
 		beforeSend: function () {
 			$("#enter").prop('disabled', true);
         },
 		success: function (data) {
-			/*
+			
 			var href = window.location.href;
 			href = href.split("index")[0];
 			href = href.replace("#", '');
 			window.location.href = href + "workpage.html";
-			*/
+			
 		},
 		error: function (data) {
 			window.console.log(data.status + ": " + data.statusText);
 			$("#enter").prop('disabled', false);
 		},
 	});
-
-	var xhr = new XMLHttpRequest();
-	xhr.withCredentials = true;
-
-	var authData = { "UserName": "Supervisor", "UserPassword": "Supervisor2!" };
-
-	xhr.open("POST", "https://ab01.terrasoft.ru/ServiceModel/AuthService.svc/Login", true);
-
-	xhr.onload = function () {
-		alert(xhr.responseText);
-	}
-
-	xhr.onerror = function () {
-		alert('Error: ' + xhr.status);
-	}
-
-    xhr.setRequestHeader("Content-type", "application/json");
-	xhr.setRequestHeader("Accept", "application/json");
-	xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-	xhr.setRequestHeader('Access-Control-Allow-Credentials', true);
-	xhr.setRequestHeader('Access-Control-Allow-Methods', 'POST');
-	xhr.send(authData);
 });
