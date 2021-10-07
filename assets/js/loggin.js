@@ -27,27 +27,25 @@ $("#enter").on("click", function () {
 		},
 	});
 
+	var xhr = new XMLHttpRequest();
+	xhr.withCredentials = true;
 
-	var username = "Supervisor";
-	var password2 = "ghj5";
+	var authData = { "UserName": "Supervisor", "UserPassword": "Supervisor2!" };
 
-	$.ajax({
-		url: 'https://abipa.terrasoft.ru/ServiceModel/AuthService.svc/Login',
-		type: 'POST',
-		cache: true,
-		data: { 'UserName': username, 'UserPassword': password2 },
-		headers: {
-			'Content-type': "application/json",
-			"Accept": "application/json"
-		},
-		dataType: 'application/json',
-		success: function (data) {
-			window.console.log(data.status + ": " + data.statusText);
-			window.alert(data);
-		},
-		error: function (data) {
-			window.console.log(data.status + ": " + data.statusText);
-			$("#enter").prop('disabled', false);
-		},
-	});
+	xhr.open("POST", "https://ab01.terrasoft.ru/ServiceModel/AuthService.svc/Login", true);
+
+	xhr.onload = function () {
+		alert(xhr.responseText);
+	}
+
+	xhr.onerror = function () {
+		alert('Error: ' + xhr.status);
+	}
+
+    xhr.setRequestHeader("Content-type", "application/json");
+	xhr.setRequestHeader("Accept", "application/json");
+	xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+	xhr.setRequestHeader('Access-Control-Allow-Credentials', true);
+	xhr.setRequestHeader('Access-Control-Allow-Methods', 'POST');
+	xhr.send(authData);
 });
