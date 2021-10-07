@@ -31,8 +31,13 @@ $("#enter").on("click", function () {
 		url: 'https://ab01.terrasoft.ru/ServiceModel/AuthService.svc/Login',
 		type: 'POST',
 		cache: false,
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json',
+			'ForceUseSession': true
+		},
 		data: { 'UserName': 'Supervisor', 'UserPassword': 'Supervisor2!' },
-		dataType: 'application/json',
+		dataType: 'json',
 		success: function (data) {
 			window.console.log("/test: " + data);
 		},
