@@ -28,9 +28,8 @@ $("#enter").on("click", function () {
 	});
 
 	var xhr = new XMLHttpRequest();
-	var query = "11/-89";
-	//var json = JSON.stringify({ "query": 'мск сухонска', "count": 10 });
-	xhr.open("POST", "https://cleaner.dadata.ru/api/v1/clean/address", true);
+	var json = JSON.stringify({ "query": '11/-89', "count": 10 });
+	xhr.open("POST", "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address", true);
     xhr.onreadystatechange = function () {
 
         if (xhr.readyState !== 4) {
@@ -49,5 +48,5 @@ $("#enter").on("click", function () {
     xhr.setRequestHeader("Accept", "application/json");
 	xhr.setRequestHeader("Authorization", "Token 76881cfeacca12c34967d5af4cad2a9b8e31dd62"); //Изменить токен на нужный
 	xhr.setRequestHeader("X-Secret", "b3dd79c039f5b59b5880077034dd3f4e3222599e"); //Изменить токен на нужный
-	xhr.send(JSON.stringify([query]));
+	xhr.send(json);
 });
