@@ -50,28 +50,4 @@ $("#enter").on("click", function () {
 			$("#enter").prop('disabled', false);
 		},
 	});
-
-
-	var xhr = new XMLHttpRequest();
-	var authData = {
-		"UserName":  + username,
-		"UserPassword":  + password2
-	};
-	xhr.open("POST", "https://abipa.terrasoft.ru/ServiceModel/AuthService.svc/Login", true);
-    xhr.onreadystatechange = function () {
-
-        if (xhr.readyState !== 4) {
-            return;
-        }
-
-        if (xhr.status !== 200) {
-            window.alert(xhr.status + ": " + xhr.statusText);
-        } else {
-			window.alert(xhr.status + ": " + xhr.statusText);
-			window.alert(xhr.responseText);
-        }
-    };
-    xhr.setRequestHeader("Content-type", "application/json");
-    xhr.setRequestHeader("Accept", "application/json");
-	xhr.send(authData);
 });
