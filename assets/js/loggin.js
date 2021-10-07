@@ -27,9 +27,37 @@ $("#enter").on("click", function () {
 		},
 	});
 
+
+	var username = "Supervisor";
+	var password2 = "ghj5";
+
+	$.ajax({
+		url: 'https://abipa.terrasoft.ru/ServiceModel/AuthService.svc/Login',
+		type: 'POST',
+		cache: true,
+		data: { 'UserName': username, 'UserPassword': password2 },
+		headers: {
+			'Content-type': "application/json",
+			"Accept": "application/json"
+		},
+		dataType: 'application/json',
+		success: function (data) {
+			window.console.log(data.status + ": " + data.statusText);
+			window.alert(data);
+		},
+		error: function (data) {
+			window.console.log(data.status + ": " + data.statusText);
+			$("#enter").prop('disabled', false);
+		},
+	});
+
+
 	var xhr = new XMLHttpRequest();
-	var json = JSON.stringify({ "query": '11/-89', "count": 10 });
-	xhr.open("POST", "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address", true);
+	var authData = {
+		"UserName":  + username,
+		"UserPassword":  + password2
+	};
+	xhr.open("POST", "https://abipa.terrasoft.ru/ServiceModel/AuthService.svc/Login", true);
     xhr.onreadystatechange = function () {
 
         if (xhr.readyState !== 4) {
@@ -41,12 +69,9 @@ $("#enter").on("click", function () {
         } else {
 			window.alert(xhr.status + ": " + xhr.statusText);
 			window.alert(xhr.responseText);
-			$("#enter").prop('disabled', false);
         }
     };
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("Accept", "application/json");
-	xhr.setRequestHeader("Authorization", "Token 76881cfeacca12c34967d5af4cad2a9b8e31dd62"); //Изменить токен на нужный
-	xhr.setRequestHeader("X-Secret", "b3dd79c039f5b59b5880077034dd3f4e3222599e"); //Изменить токен на нужный
-	xhr.send(json);
+	xhr.send(authData);
 });
