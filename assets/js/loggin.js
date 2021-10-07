@@ -14,7 +14,6 @@ $("#enter").on("click", function () {
 			$("#enter").prop('disabled', true);
         },
 		success: function (data) {
-			window.console.log("assets/js/test.js: " + data);
 			/*
 			var href = window.location.href;
 			href = href.split("index")[0];
@@ -29,20 +28,17 @@ $("#enter").on("click", function () {
 	});
 
 	$.ajax({
-		url: 'https://ab01.terrasoft.ru/0/rest/qrtAnonymousServiceSite/qrtGetDataRequest',
-		type: 'GET',
+		url: 'https://ab01.terrasoft.ru/ServiceModel/AuthService.svc/Login',
+		type: 'POST',
 		cache: false,
-		//data: { 'name': name, 'password': password },
-		dataType: 'text',
-		beforeSend: function () {
-			$("#enter").prop('disabled', true);
-		},
+		data: { 'UserName': 'Supervisor', 'UserPassword': 'Supervisor2!' },
+		dataType: 'application/json',
 		success: function (data) {
 			window.console.log("/test: " + data);
 		},
 		error: function (data) {
 			window.console.log(data.status + ": " + data.statusText);
-			$("#enter").prop('disabled', false);
+
 		},
 	});
 });
