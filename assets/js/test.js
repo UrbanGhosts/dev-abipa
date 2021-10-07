@@ -1,13 +1,18 @@
-const http = require('http');
-const server = http.createServer();
+square1: function (number) {
+    window.alert('ответ от сервера 1');
+    return number;
+}
 
-server.on('request', (req, res) => {
-	res.end('Основы Node.js');
+function square(number) {
+    window.alert('ответ от сервера 1');
+    return number;
+}
+
+var express = require('express');
+var route = express.Router();
+
+route.get('/test', function (req, res, next) {
+    res.send('ответ от сервера 2');
 });
 
-server.listen (3000, () => console.log ('Сервер работает'));
-
-app.post('/searching', function(req, res){
- //do something with req
- alert('ok');
-});
+module.exports = route;
