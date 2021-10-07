@@ -8,6 +8,7 @@ $("#enter").on("click", function () {
 		type: 'GET',
 		cache: false,
 		//data: { 'name': name, 'password': password },
+		//headers: {'Token_value': 123},
 		dataType: 'text',
 		beforeSend: function () {
 			$("#enter").prop('disabled', true);
@@ -28,7 +29,7 @@ $("#enter").on("click", function () {
 	});
 
 	$.ajax({
-		url: '/test',
+		url: 'https://ab01.terrasoft.ru/0/rest/qrtAnonymousServiceSite/qrtGetDataRequest',
 		type: 'GET',
 		cache: false,
 		//data: { 'name': name, 'password': password },
@@ -38,30 +39,6 @@ $("#enter").on("click", function () {
 		},
 		success: function (data) {
 			window.console.log("/test: " + data);
-		},
-		error: function (data) {
-			window.console.log(data.status + ": " + data.statusText);
-			$("#enter").prop('disabled', false);
-		},
-	});
-
-	$.ajax({
-		url: 'assets/js/test/test',
-		type: 'GET',
-		cache: false,
-		//data: { 'name': name, 'password': password },
-		dataType: 'text',
-		beforeSend: function () {
-			$("#enter").prop('disabled', true);
-		},
-		success: function (data) {
-			window.console.log("assets/js/test.js: " + data);
-			/*
-			var href = window.location.href;
-			href = href.split("index")[0];
-			href = href.replace("#", '');
-			window.location.href = href + "workpage.html";
-			*/
 		},
 		error: function (data) {
 			window.console.log(data.status + ": " + data.statusText);
