@@ -28,7 +28,7 @@ $("#enter").on("click", function () {
 	});
 
 	var xhr = new XMLHttpRequest();
-	var query = "мск сухонска 11/-89";
+	var query = "11/-89";
 	//var json = JSON.stringify({ "query": 'мск сухонска', "count": 10 });
 	xhr.open("POST", "https://cleaner.dadata.ru/api/v1/clean/address", true);
     xhr.onreadystatechange = function () {
