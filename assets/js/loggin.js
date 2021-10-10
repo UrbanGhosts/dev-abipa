@@ -4,11 +4,11 @@ $("#enter").on("click", function () {
 	var password = $("#password").val();
 	
 	$.ajax({
-		url: '/loggin',
+		url: '/test',
 		//url: '/assets/js/test.js',
 		type: 'GET',
 		cache: false,
-		data: { 'name': name, 'password': password },
+		//data: { 'name': name, 'password': password },
 		//headers: {'Token_value': 123},
 		dataType: 'text',
 		beforeSend: function () {

@@ -1,11 +1,24 @@
 var express = require('express');
-var route = express.Router();
+var http = require('http');
+var app = express();
+var server = http.createServer(app);
 
-route.get('/', function (req, res, next) {
-    res.send('ответ от сервера');
+
+server.listen(3000, 'localhost', function () {
+	console.log('Express server started on port %s at %s', server.address().port, server.address().address);
+	console.log("... port %d in %s mode", server.address().port, app.settings.env);
 });
 
-route.get('/loggin', function (req, res, next) {
+
+app.get('/', function (req, res, next) {
+    res.send('Start page');
+});
+
+app.get('/test', function (req, res, next) {
+    res.send('/get-test');
+});
+
+app.get('/loggin', function (req, res, next) {
 	var xhr = new XMLHttpRequest();
 	xhr.withCredentials = true;
 	var authData = { "UserName": "Supervisor", "UserPassword": "Supervisor2!" };
@@ -26,8 +39,8 @@ route.get('/loggin', function (req, res, next) {
 	xhr.send(authData);
 });
 
-route.post('/data', function (req, res, next) {
-	res.send('ответ от сервера 3');
+app.post('/data', function (req, res, next) {
+	res.send('/data');
 });
 
-module.exports = route;
+module.exports = app;
