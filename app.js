@@ -1,8 +1,11 @@
 var express = require('express');
 var http = require('http');
+var path = require('Path');
 var app = express();
 var server = http.createServer(app);
 app.set('view engine', 'html');
+
+app.use(express.static(path.join(__dirname, 'assets')));
 
 server.listen(3000, 'localhost', function () {
 	console.log('Express server started on port %s at %s', server.address().port, server.address().address);
