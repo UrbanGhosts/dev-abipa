@@ -14,13 +14,22 @@ server.listen(3000, 'localhost', function () {
 
 
 app.get('/', function (req, res, next) {
-    //res.send('Start page');
 	res.sendFile('/index.html', { root: __dirname });
 });
 
 app.get('/test', function (req, res, next) {
 	//res.send('/get-test');
-	res.sendFile('/workpage.html', { root: __dirname });
+	var login = req.query.name;
+	var password = req.query.password;
+	if (login != '' && password != '' ){
+		res.sendFile('/workpage.html', { root: __dirname });
+		//res.end('{"success" : "Ok", "status" : 200}');
+	} else {
+		res.sendFile('/index.html', { root: __dirname });
+		//res.end('{"success" : "Unauthorized", "status" : 401}');
+	}
+	
+	console.log(login + ' / ' + password);
 });
 
 app.get('/loggin', function (req, res, next) {
