@@ -14,7 +14,8 @@ server.listen(3000, 'localhost', function () {
 
 
 app.get('/', function (req, res, next) {
-    res.send('Start page');
+    //res.send('Start page');
+	res.sendFile('/index.html', { root: __dirname });
 });
 
 app.get('/test', function (req, res, next) {
