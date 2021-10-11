@@ -1,5 +1,6 @@
 var express = require('express');
 var http = require('http');
+var https = require('https');
 var path = require('Path');
 var app = express();
 var server = http.createServer(app);
@@ -7,7 +8,8 @@ app.set('view engine', 'html');
 
 app.use(express.static(path.join(__dirname, 'assets')));
 
-server.listen(3000, 'localhost', function () {
+var port = process.env.PORT || 3000;
+server.listen(port, 'localhost', function () {
 	console.log('Express server started on port %s at %s', server.address().port, server.address().address);
 	console.log("... port %d in %s mode", server.address().port, app.settings.env);
 });
@@ -17,44 +19,74 @@ app.get('/', function (req, res, next) {
 	res.sendFile('/index.html', { root: __dirname });
 });
 
-app.get('/test', function (req, res, next) {
-	//res.send('/get-test');
+app.get('/account', function (req, res, next) {
 	var login = req.query.name;
 	var password = req.query.password;
-	if (login != '' && password != '' ){
+	if (login != '' && password != '') {
+		
 		res.sendFile('/workpage.html', { root: __dirname });
 		//res.end('{"success" : "Ok", "status" : 200}');
 	} else {
-		res.sendFile('/index.html', { root: __dirname });
+		res.redirect('/');
+		//res.sendFile('/index.html', { root: __dirname });
 		//res.end('{"success" : "Unauthorized", "status" : 401}');
 	}
 	
-	console.log(login + ' / ' + password);
 });
 
-app.get('/loggin', function (req, res, next) {
-	var xhr = new XMLHttpRequest();
-	xhr.withCredentials = true;
+app.get('/loggin', function (req, res1, next) {
+	var authData = { "UserName": "Supervisor", "UserPassword": "Supervisor2!" };
+
+	https.get('https://ab01.terrasoft.ru/ServiceModel/AuthService.svc/Login', res => {
+		let data = [];
+		const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
+		console.log('Status Code:', res.statusCode);
+		console.log('Date in Response header:', headerDate);
+
+		res.on('data', chunk => {
+			data.push(chunk);
+		});
+
+		res.on('end', () => {
+			res1.send((data).toString());
+		});
+	}).on('error', err => {
+		console.log('Error: ', err.message);
+	});
+	/*
 	var authData = { "UserName": "Supervisor", "UserPassword": "Supervisor2!" };
 	xhr.open("POST", "https://ab01.terrasoft.ru/ServiceModel/AuthService.svc/Login", true);
-
-	xhr.onload = function () {
-		res.send(xhr.responseText);
-	}
-
-	xhr.onerror = function () {
-		res.send('Error: ' + xhr.status);
-	}
-
 	xhr.setRequestHeader("Content-type", "application/json");
 	xhr.setRequestHeader("Accept", "application/json");
-	xhr.setRequestHeader('Access-Control-Allow-Credentials', true);
-	xhr.setRequestHeader('Access-Control-Allow-Methods', 'POST');
-	xhr.send(authData);
+	
+	http.get('https://jsonplaceholder.typicode.com/users', res => {
+		let data = [];
+		const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
+		console.log('Status Code:', res.statusCode);
+		console.log('Date in Response header:', headerDate);
+
+		res.on('data', chunk => {
+			data.push(chunk);
+		});
+
+		res.on('end', () => {
+			console.log('Response ended: ');
+			const users = JSON.parse(Buffer.concat(data).toString());
+
+			for (user of users) {
+				console.log(`Got user with id: ${user.id}, name: ${user.name}`);
+			}
+		});
+	}).on('error', err => {
+		console.log('Error: ', err.message);
+	});
+	*/
 });
 
-app.post('/data', function (req, res, next) {
-	res.send('/data');
+app.post('/addOrder', function (req, res) {
+	//res.send('/data');
+	console.log(req);
+	res.redirect('/account');
 });
 
 module.exports = app;

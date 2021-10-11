@@ -4,7 +4,7 @@ $("#enter").on("click", function () {
 	var password = $("#password").val();
 	
 	$.ajax({
-		url: '/test',
+		url: '/account',
 		type: 'GET',
 		cache: false,
 		data: { 'name': name, 'password': password },
@@ -16,9 +16,8 @@ $("#enter").on("click", function () {
 		success: function (data) {
 			
 			var href = window.location.href;
-			//href = href.split("index")[0];
-			//href = href.replace("#", '');
-			window.location.href = href + "test";
+			window.location.href = href + "account";
+			$("#enter").prop('disabled', false);
 			/*
 			if (data.status == '401'){
 				window.alert(data.success);

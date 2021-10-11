@@ -28,6 +28,26 @@ $("#createOrder").on("click", function () {
 	addButton.style.top = "10px";
 	addButton.style.left = "10px";
 	addButton.style.position = "relative";
+
+
+	$.ajax({
+		url: '/addOrder',
+		type: 'POST',
+		cache: false,
+		data: { 'name': 'supervisor', 'password': '123' },
+		contentType: 'application/json; charset=utf-8',
+		beforeSend: function () {
+			$("#createOrder").prop('disabled', true);
+		},
+		success: function (data) {
+			window.console.log(data);
+			$("#createOrder").prop('disabled', false);
+		},
+		error: function (data) {
+			window.console.log(data.status + ": " + data.statusText);
+			$("#createOrder").prop('disabled', false);
+		},
+	});
 });
 
 //Событие "Изменения поля unit"
