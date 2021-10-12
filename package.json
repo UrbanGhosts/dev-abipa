@@ -1,0 +1,19 @@
+{
+  "name": "abipa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UrbanGhosts/dev-abipa.git"
+  },
+  "author": "Quarta (Kolnogorov.R)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UrbanGhosts/dev-abipa/issues"
+  },
+  "homepage": "https://github.com/UrbanGhosts/dev-abipa#readme"
+}
