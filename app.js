@@ -1,6 +1,7 @@
 var express = require('express');
 var http = require('http');
 var https = require('https');
+const rp = require('request-promise');
 var path = require('Path');
 var cookieParser = require('cookie-parser');
 var app = express();
@@ -53,31 +54,40 @@ app.get('/account', function (req, res, next) {
 });
 
 
-var BPMCSRF = null;
-var ASPXAUTH = null;
-var BPMLOADER = null;
-var userName = null;
+
 var cookies;
+var BPMCSRF;
 app.get('/sendOrder', async function (req, res, next) {
+	//Remove cookie from Creatio
+	/*
+	res.clearCookie('BPMCSRF');
+	res.clearCookie('.ASPXAUTH');
+	res.clearCookie('BPMLOADER');
+	res.clearCookie('UserName');
+	*/
 	//Авторизация в Creatio
-	if (!BPMLOADER) {
+	if (!cookies) {
 		var authData = { "UserName": "Supervisor", "UserPassword": "Supervisor2!" };
-		const answer = await creatioRequest('https://ab01.terrasoft.ru/ServiceModel/AuthService.svc/Login', authData);
-		//cookie from Creatio
+		const answer = await creatioRequest('https://ab01.terrasoft.ru/ServiceModel/AuthService.svc/Login', authData, 'POST');
+		console.log(answer);
+		//Set cookie from Creatio
+		/*
 		BPMCSRF = req.cookies['BPMCSRF'];
 		ASPXAUTH = req.cookies['.ASPXAUTH'];
 		BPMLOADER = req.cookies['BPMLOADER'];
 		userName = req.cookies['UserName'];
+		*/
+		BPMCSRF = cookies[2].split(';')[0];
+		BPMCSRF = BPMCSRF.split('=')[1];
+		console.log(BPMCSRF);
+	}
 
-		cookies = req.cookies;
-    }
-
-
-	var testSiteRequest = 'testSiteRequest';
-	var Data = "{ data:" + testSiteRequest + "}";
-	const answer2 = await creatioRequest('https://ab01.terrasoft.ru/0/rest/RivileWebService/PostInvoiceValue', Data);
+	var Data = { "data": 'testAnswer' };
+	var getData = 'testAnswer';
+	const answer2 = await creatioRequest('https://ab01.terrasoft.ru/0/rest/RivileWebService/PostInvoiceValue', Data, 'POST');
+	//const answer2 = await creatioRequest('https://ab01.terrasoft.ru/0/rest/RivileWebService/GetTestValue?data=' + getData, Data, 'GET');
 	res.send(answer2);
-
+	
 });
 
 app.post('/addOrder', function (req, res) {
@@ -88,15 +98,13 @@ app.post('/addOrder', function (req, res) {
 module.exports = app;
 
 
-async function creatioRequest(url, data) {
-	const dataString = JSON.stringify(data)
-
+async function creatioRequest(url, data, method) {
+	const dataString = JSON.stringify(data);
 	var options = {};
-	if (BPMLOADER) {
-		console.log('1');
-		var cookie = 'BPMCSRF=' + BPMCSRF + "; UserName=" + userName + "; .ASPXAUTH=" + ASPXAUTH + "; BPMLOADER=" + BPMLOADER;
+
+	if (cookies) {
 		options = {
-			method: 'POST',
+			method: method,
 			headers: {
 				'Cookie': cookies,
 				'BPMCSRF': BPMCSRF,
@@ -108,18 +116,17 @@ async function creatioRequest(url, data) {
 				'Content-Length': dataString.length,
 			},
 		};
-		console.log(options);
 	} else {
-		console.log('0');
 		options = {
-			method: 'POST',
+			method: method,
 			headers: {
 				'KeepAlive': true,
 				'Content-Type': 'application/json',
 				'Content-Length': dataString.length,
 			},
 		};
-    }
+	}
+
 	return new Promise((resolve, reject) => {
 		const req = https.request(url, options, (res) => {
 			if (res.statusCode < 200 || res.statusCode > 299) {
@@ -131,6 +138,10 @@ async function creatioRequest(url, data) {
 			res.on('end', () => {
 				const resString = Buffer.concat(body).toString();
 				resolve(resString);
+				if (!cookies) {
+					cookies = res.headers['set-cookie'];
+                }
+				
 			});
 		});
 
