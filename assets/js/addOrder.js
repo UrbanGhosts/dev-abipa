@@ -29,12 +29,27 @@ $("#createOrder").on("click", function () {
 	addButton.style.left = "10px";
 	addButton.style.position = "relative";
 
-
+	
+	var unit = $("#unit").val();
+	var len = $("#length").val();
+	var width = $("#width").val();
+	var height = $("#height").val();
+	var weight = $("#weight").val();
+	
+	var price = $("#price").val();
+	
 	$.ajax({
-		url: '/addOrder',
-		type: 'POST',
+		url: '/sendOrder',
+		type: 'GET',
 		cache: false,
-		data: { 'name': 'supervisor', 'password': '123' },
+		data: { 
+			'unit': unit, 
+			'len': len,
+			'width': width,
+			'height': height,
+			'weight': weight,
+			'price': price,
+		},
 		contentType: 'application/json; charset=utf-8',
 		beforeSend: function () {
 			$("#createOrder").prop('disabled', true);

@@ -65,6 +65,14 @@ app.get('/sendOrder', async function (req, res, next) {
 	res.clearCookie('BPMLOADER');
 	res.clearCookie('UserName');
 	*/
+	
+	var unit = req.query.unit;
+	var len = req.query.len;
+	var width = req.query.width;
+	var height = req.query.height;
+	var weight = req.query.weight;
+	var price = req.query.price;
+	
 	//Авторизация в Creatio
 	if (!cookies) {
 		var authData = { "UserName": "Supervisor", "UserPassword": "Supervisor2!" };
@@ -77,16 +85,21 @@ app.get('/sendOrder', async function (req, res, next) {
 		BPMLOADER = req.cookies['BPMLOADER'];
 		userName = req.cookies['UserName'];
 		*/
-		BPMCSRF = cookies[2].split(';')[0];
-		BPMCSRF = BPMCSRF.split('=')[1];
-		console.log(BPMCSRF);
 	}
 
-	var Data = { "data": 'testAnswer' };
+	var Data = { "data": [ 
+			unit,
+			len,
+			width,
+			height,
+			weight,
+			price,
+		]};
 	var getData = 'testAnswer';
-	const answer2 = await creatioRequest('https://ab01.terrasoft.ru/0/rest/RivileWebService/PostInvoiceValue', Data, 'POST');
-	//const answer2 = await creatioRequest('https://ab01.terrasoft.ru/0/rest/RivileWebService/GetTestValue?data=' + getData, Data, 'GET');
-	res.send(answer2);
+	const answer2 = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/qrtCreateOrder', Data, 'POST');
+	//const answer2 = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/GetOrdersValue?data=' + getData, Data, 'GET');
+	console.log(answer2);
+	res.redirect('/account');
 	
 });
 
@@ -140,6 +153,8 @@ async function creatioRequest(url, data, method) {
 				resolve(resString);
 				if (!cookies) {
 					cookies = res.headers['set-cookie'];
+					BPMCSRF = cookies[2].split(';')[0];
+					BPMCSRF = BPMCSRF.split('=')[1];
                 }
 				
 			});
