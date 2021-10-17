@@ -20,23 +20,68 @@ server.listen(port, 'localhost', function () {
 
 
 app.get('/', function (req, res, next) {
+	res.clearCookie('CookieAbipaName');
 	res.sendFile('/index.html', { root: __dirname });
 });
 
-app.get('/login', function (req, res, next) {
+app.get('/login', async function (req, res, next) {
 	var login = req.query.name;
 	var password = req.query.password;
 
-	console.log(login.length + "/" + password.length);
 	if (login.length > 0 && password.length > 0) {
-		//TODO: отправить запрос в БД и заполнить значение cookie из абипы
-		let options = {
-			maxAge: 1000 * 60 * 15, // истечет через 15 минут
-			httpOnly: true, // Файл cookie доступен только веб-серверу.
-			signed: true // Указывает, должен ли быть подписан файл cookie
+		//Авторизация в Creatio
+		if (!cookies) {
+			var authData = { "UserName": "Supervisor", "UserPassword": "Supervisor2!" };
+			const answer = await creatioRequest('https://ab01.terrasoft.ru/ServiceModel/AuthService.svc/Login', authData, 'POST');
+			console.log(answer);
+			//Set cookie from Creatio
+			/*
+			var CookieAbipaName = req.cookies['CookieAbipaName'];
+			*/
 		}
-		res.cookie('CookieAbipaName', 'testAbipaValue', options)
-		res.redirect('/account');
+
+		var Data = { "login": login, "password": password };
+		const result = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/AuthorizationSiteAbipa', Data, 'POST');
+		var obj = JSON.parse(result);
+		obj = JSON.parse(obj.AuthorizationSiteAbipaResult);
+		console.log(obj.Status);
+		console.log(obj.cookie);
+
+		if (obj.cookie) {
+			let options = {
+				maxAge: 1000 * 60 * 15, // истечет через 15 минут
+				httpOnly: true, // Файл cookie доступен только веб-серверу.
+				signed: true // Указывает, должен ли быть подписан файл cookie
+			}
+			res.cookie('CookieAbipaName', obj.cookie, options)
+			//res.redirect('/account');
+			res.send(obj.Status);
+		} else {
+			res.send(obj.Status);
+        }
+		
+	} else {
+		res.redirect('/');
+	}
+});
+
+app.get('/updatePassword', async function (req, res, next) {
+	var cookie = req.signedCookies['CookieAbipaName'];
+	if (!cookie) {
+		res.redirect('/');
+		return;
+	}
+
+	var newVal = req.query.newVal;
+	if (newVal.length > 0) {
+
+		var Data = { "password": newVal };
+		const result = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/UpdatePasswordSiteAbipa', Data, 'POST');
+		var obj = JSON.parse(result);
+		obj = JSON.parse(obj.UpdatePasswordSiteAbipaResult);
+
+		res.send(obj.Status);
+
 	} else {
 		res.redirect('/');
 	}
@@ -55,8 +100,7 @@ app.get('/account', function (req, res, next) {
 
 
 
-var cookies;
-var BPMCSRF;
+
 app.get('/sendOrder', async function (req, res, next) {
 	//Remove cookie from Creatio
 	/*
@@ -110,7 +154,8 @@ app.post('/addOrder', function (req, res) {
 
 module.exports = app;
 
-
+var cookies;
+var BPMCSRF;
 async function creatioRequest(url, data, method) {
 	const dataString = JSON.stringify(data);
 	var options = {};

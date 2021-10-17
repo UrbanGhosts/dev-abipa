@@ -36,10 +36,11 @@ h1, h2, h3{
 	height: 0 auto;
 }
 
-.logo{
+.logo {
 	width: 50%;
 	height: 10vh;
-	margin: 0px auto;
+	margin-top: 10px;
+	margin-left: 125px;
 	background: url("../images/abipa-logo.png") center no-repeat;
 	-webkit-background-size: cover;
 	background-size: cover;
@@ -57,7 +58,14 @@ h1, h2, h3{
 }
 
 .dws-login {
-	margin: 0 0 0 75px;
+	margin-top:-5px;
+	margin-left: 70px;
+}
+
+.dws-newPassword {
+	margin-top: -5px;
+	margin-left: 70px;
+	display: none;
 }
 
 input[type="submit"] {
