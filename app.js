@@ -75,7 +75,7 @@ app.get('/updatePassword', async function (req, res, next) {
 	var newVal = req.query.newVal;
 	if (newVal.length > 0) {
 
-		var Data = { "password": newVal };
+		var Data = { "cookie": cookie, "password": newVal };
 		const result = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/UpdatePasswordSiteAbipa', Data, 'POST');
 		var obj = JSON.parse(result);
 		obj = JSON.parse(obj.UpdatePasswordSiteAbipaResult);
