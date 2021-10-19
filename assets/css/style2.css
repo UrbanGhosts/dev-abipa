@@ -19,7 +19,7 @@ body {
 	background: gray;        
 	position: relative;
 	top: 10px;
-	left: 10px;
+	margin-left: 10px;
 	border-radius: 5px 5px 5px 5px;
 }
 
@@ -29,7 +29,7 @@ body {
 	background: gray;        
 	position: relative;
 	top: -30px;
-	left: 10px;
+	margin-left: 10px;
 	border-radius: 5px 5px 5px 5px;
 }
 
@@ -39,7 +39,7 @@ body {
 	margin: 0;
 	position: absolute;
 	top: 50%;
-	left: 50%;
+	margin-left: 50%;
 	margin-right: -50%;
 	transform: translate(-50%, -50%);
 }
@@ -48,7 +48,7 @@ body {
 	margin: 0 auto;
 	position: relative;
 	top: 10px;
-	left: 20px;
+	margin-left: 20px;
 }
 
 .form-class {
@@ -59,33 +59,33 @@ body {
 	margin: 0 auto;
 	position: relative;
 	top: -10px;
-	left: 20px;
+	margin-left: 20px;
 }
 
 .block-form-localCargo {    
 	margin: 0 auto;
 	position: relative;
 	top: -25px;
-	left: 20px;
+	margin-left: 20px;
 }
 .block-form-localCargo-global {    
 	margin: 0 auto;
 	position: relative;
 	top: -340px;
-	left: 700px;
+	margin-left: 700px;
 }
 
 .block-form-additional {    
 	margin: 0 auto;
 	position: relative;
 	top: -10px;
-	left: 20px;
+	margin-left: 20px;
 }
 .block-form-additional-global {    
 	margin: 0 auto;
 	position: relative;
 	top: -100px;
-	left: 0px;
+	margin-left: 0px;
 }
 
 .t-input-units {
@@ -101,7 +101,7 @@ body {
 	margin: 0 auto;
 	position: relative;
 	top: -92px;
-	left: 360px;
+	margin-left: 360px;
 }
 
 .t-block-description {
@@ -127,8 +127,11 @@ body {
 	box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
 	/* сглаживание углов блока */
 	border-radius: 0 0 15px 15px;
+	position: relative;
 	margin-top: -25px;
-	margin-left: 35px;
+	
+	margin-left: auto;
+    margin-right: auto;
 }
 
 .block {
@@ -139,7 +142,11 @@ body {
 	box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
 	/* сглаживание углов блока */
 	border-radius: 5px 5px 5px 5px;
-	margin: 20px auto;
+	position: relative;
+	
+	margin-top: 25px;
+	margin-left: auto;
+    margin-right: auto;
 }
 
 .login-label-smallCaption {
@@ -160,7 +167,7 @@ body {
 	font-size: 1.2em;
 	position: relative;
 	top: -45px;
-	left: 1110px;
+	margin-left: 1110px;
 	color: black;
 }
 
@@ -204,7 +211,7 @@ td:first-child {
 	display: none;
 }
 
-input[type="submit"] {
+input[id="addOrder"] {
 	padding: 13px 30px;
 	font-size: 15px;
 	color: #fff;
@@ -215,7 +222,22 @@ input[type="submit"] {
 	margin: 0 auto;
 	position: relative;
 	top: 10px;
-	left: 10px;
+	margin-left: 10px;
+}
+
+input[id="createOrder"] {
+	padding: 13px 30px;
+	font-size: 15px;
+	color: #fff;
+	background-color: green;
+	border: none;
+	border-bottom: 4px solid #2ee640;
+	cursor: pointer;
+	margin: 0 auto;
+	position: relative;
+	top: 10px;
+	margin-left: auto;
+    margin-right: auto;
 }
 
 input[id="counry-To"], [id="counry-From"] {

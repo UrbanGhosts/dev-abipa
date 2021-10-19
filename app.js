@@ -34,18 +34,13 @@ app.get('/login', async function (req, res, next) {
 			var authData = { "UserName": "Supervisor", "UserPassword": "Supervisor2!" };
 			const answer = await creatioRequest('https://ab01.terrasoft.ru/ServiceModel/AuthService.svc/Login', authData, 'POST');
 			console.log(answer);
-			//Set cookie from Creatio
-			/*
-			var CookieAbipaName = req.cookies['CookieAbipaName'];
-			*/
 		}
 
 		var Data = { "login": login, "password": password };
 		const result = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/AuthorizationSiteAbipa', Data, 'POST');
 		var obj = JSON.parse(result);
 		obj = JSON.parse(obj.AuthorizationSiteAbipaResult);
-		console.log(obj.Status);
-		console.log(obj.cookie);
+		console.log(obj.Status + ": " + obj.cookie);
 
 		if (obj.cookie) {
 			let options = {
@@ -54,12 +49,8 @@ app.get('/login', async function (req, res, next) {
 				signed: true // ”казывает, должен ли быть подписан файл cookie
 			}
 			res.cookie('CookieAbipaName', obj.cookie, options)
-			//res.redirect('/account');
-			res.send(obj.Status);
-		} else {
-			res.send(obj.Status);
-        }
-		
+		}
+		res.send(obj.Status);
 	} else {
 		res.redirect('/');
 	}
@@ -102,13 +93,6 @@ app.get('/account', function (req, res, next) {
 
 
 app.get('/sendOrder', async function (req, res, next) {
-	//Remove cookie from Creatio
-	/*
-	res.clearCookie('BPMCSRF');
-	res.clearCookie('.ASPXAUTH');
-	res.clearCookie('BPMLOADER');
-	res.clearCookie('UserName');
-	*/
 	var cookie = req.signedCookies['CookieAbipaName'];
 	if (!cookie) {
 		res.redirect('/');
@@ -126,13 +110,6 @@ app.get('/sendOrder', async function (req, res, next) {
 		var authData = { "UserName": "Supervisor", "UserPassword": "Supervisor2!" };
 		const answer = await creatioRequest('https://ab01.terrasoft.ru/ServiceModel/AuthService.svc/Login', authData, 'POST');
 		console.log(answer);
-		//Set cookie from Creatio
-		/*
-		BPMCSRF = req.cookies['BPMCSRF'];
-		ASPXAUTH = req.cookies['.ASPXAUTH'];
-		BPMLOADER = req.cookies['BPMLOADER'];
-		userName = req.cookies['UserName'];
-		*/
 	}
 
 	var Data = {"cookie": cookie, "data": [ 
@@ -143,10 +120,12 @@ app.get('/sendOrder', async function (req, res, next) {
 			weight,
 			price,
 		]};
-	var getData = 'testAnswer';
-	const answer2 = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/qrtCreateOrder', Data, 'POST');
+	
+	const result = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/qrtCreateOrder', Data, 'POST');
+	//var getData = 'testAnswer';
 	//const answer2 = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/GetOrdersValue?data=' + getData, Data, 'GET');
-	console.log(answer2);
+	console.log(result);
+
 	res.redirect('/account');
 	
 });
