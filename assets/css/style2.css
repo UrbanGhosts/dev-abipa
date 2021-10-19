@@ -50,14 +50,42 @@ body {
 	top: 10px;
 	left: 20px;
 }
+
 .form-class {
 	display: none;
 }
+
 .block-form-units {    
 	margin: 0 auto;
 	position: relative;
 	top: -10px;
 	left: 20px;
+}
+
+.block-form-localCargo {    
+	margin: 0 auto;
+	position: relative;
+	top: -25px;
+	left: 20px;
+}
+.block-form-localCargo-global {    
+	margin: 0 auto;
+	position: relative;
+	top: -340px;
+	left: 700px;
+}
+
+.block-form-additional {    
+	margin: 0 auto;
+	position: relative;
+	top: -10px;
+	left: 20px;
+}
+.block-form-additional-global {    
+	margin: 0 auto;
+	position: relative;
+	top: -100px;
+	left: 0px;
 }
 
 .t-input-units {
@@ -99,7 +127,8 @@ body {
 	box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
 	/* сглаживание углов блока */
 	border-radius: 0 0 15px 15px;
-	margin: 0 auto;
+	margin-top: -25px;
+	margin-left: 35px;
 }
 
 .block {

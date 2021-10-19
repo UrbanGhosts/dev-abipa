@@ -1,4 +1,8 @@
 $("#addOrder").on("click", function () {
+	//TODO: Delete
+	//tableForm();
+	//return;
+	
 	let button = document.getElementById("addOrder");
 	let table = document.getElementById("table");
 
@@ -90,6 +94,51 @@ calculated = function(){
 	let price = document.getElementById("price");
 
 	price.value = (unit * 100) * width;
+	return true;
+}
+
+
+//Формирование таблицы Заявок
+tableForm = function(data){
+	let table = document.getElementById("table");
+	//Зануляем таблицу
+	table.innerHTML = '';
+	// creates a <table> element
+	var tbl = document.createElement("table");
+	
+	
+	let unit = document.getElementById("unit").value;
+	let width = document.getElementById("weight").value;
+	var nameList = ["Number", "Status", "Create on", "Closing date"];
+	
+	//Кол-во Заявок + Строка Заголовка
+	for (var i = 0; i < 3; i++) {
+		// creates a table row
+		var row = document.createElement("tr");
+		
+		//Заполнение ячеек таблицы
+		for (var j = 0; j < 4; j++) {
+			//Если нулевая строка, то формируем заголовок таблицы
+			if (i == 0){
+				let cell = document.createElement("th");
+				let cellText = document.createTextNode(nameList[j]);
+				cell.appendChild(cellText);
+				row.appendChild(cell);
+			} else {
+				let cell = document.createElement("td");
+				let cellText = document.createTextNode(nameList[j]);
+				cell.appendChild(cellText);
+				row.appendChild(cell);
+			}
+			
+		}
+
+		// add the row to the end of the table body
+		tbl.appendChild(row);
+	}	
+	
+	//Добавляем таблицу к div = table
+	table.appendChild(tbl);
 	return true;
 }
 

@@ -109,7 +109,11 @@ app.get('/sendOrder', async function (req, res, next) {
 	res.clearCookie('BPMLOADER');
 	res.clearCookie('UserName');
 	*/
-	
+	var cookie = req.signedCookies['CookieAbipaName'];
+	if (!cookie) {
+		res.redirect('/');
+		return;
+	}
 	var unit = req.query.unit;
 	var len = req.query.len;
 	var width = req.query.width;
@@ -131,7 +135,7 @@ app.get('/sendOrder', async function (req, res, next) {
 		*/
 	}
 
-	var Data = { "data": [ 
+	var Data = {"cookie": cookie, "data": [ 
 			unit,
 			len,
 			width,
