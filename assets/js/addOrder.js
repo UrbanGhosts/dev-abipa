@@ -1,7 +1,4 @@
 $("#addOrder").on("click", function () {
-	//TODO: Delete
-	//tableForm();
-	//return;
 	
 	let button = document.getElementById("addOrder");
 	let table = document.getElementById("table");
@@ -61,6 +58,7 @@ $("#createOrder").on("click", function () {
 		success: function (data) {
 			window.console.log(data);
 			$("#createOrder").prop('disabled', false);
+			load();
 		},
 		error: function (data) {
 			window.console.log(data.status + ": " + data.statusText);
@@ -99,34 +97,46 @@ calculated = function(){
 
 
 //Формирование таблицы Заявок
-tableForm = function(data){
+tableForm = function (obj) {
+	var data = obj.data.replace(/'/g, '"');
+	data = JSON.parse(data);
+	if (data == null) {
+		return;
+    }
+	//получаем и зануляем таблицу
 	let table = document.getElementById("table");
-	//Зануляем таблицу
 	table.innerHTML = '';
 	// creates a <table> element
 	var tbl = document.createElement("table");
 	
-	
-	let unit = document.getElementById("unit").value;
-	let width = document.getElementById("weight").value;
+
 	var nameList = ["Number", "Status", "Create on", "Closing date"];
 	
 	//Кол-во Заявок + Строка Заголовка
-	for (var i = 0; i < 3; i++) {
+	for (var i = 0; i < data.length + 1; i++) {
 		// creates a table row
 		var row = document.createElement("tr");
 		
 		//Заполнение ячеек таблицы
 		for (var j = 0; j < 4; j++) {
 			//Если нулевая строка, то формируем заголовок таблицы
-			if (i == 0){
+			if (i == 0) {
 				let cell = document.createElement("th");
 				let cellText = document.createTextNode(nameList[j]);
 				cell.appendChild(cellText);
 				row.appendChild(cell);
 			} else {
 				let cell = document.createElement("td");
-				let cellText = document.createTextNode(nameList[j]);
+				if (j == 0) {
+					var text = data[i-1].orderName;
+				} else if (j == 1) {
+					var text = data[i-1].orderStatus;
+				} else if (j == 2) {
+					var text = data[i-1].orderCreateDate;
+				} else if (j == 3) {
+					var text = data[i-1].orderCloseDate;
+				}
+				let cellText = document.createTextNode(text);
 				cell.appendChild(cellText);
 				row.appendChild(cell);
 			}
@@ -141,4 +151,32 @@ tableForm = function(data){
 	table.appendChild(tbl);
 	return true;
 }
+
+
+function load() {
+	$.ajax({
+		url: '/getData',
+		type: 'GET',
+		cache: false,
+		contentType: 'application/json; charset=utf-8',
+		success: function (data) {
+			var obj = JSON.parse(data);
+			obj = JSON.parse(obj.GenerateTableDataResult);
+
+			//Название компаний
+			let table = document.getElementById("t-comp4");
+			table.innerHTML = obj.companyName;
+
+			window.console.log(obj);
+			window.console.log(obj.data);
+			//Формируем таблицу
+			tableForm(obj);
+			
+		},
+		error: function (data) {
+			window.console.log(data.status + ": " + data.statusText);
+		},
+	});
+}
+window.onload = load;
 

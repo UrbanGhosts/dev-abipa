@@ -16,26 +16,25 @@ $("#enter").on("click", function () {
 		beforeSend: function () {
 			$("#enter").prop('disabled', true);
         },
-		success: function (data) {
-			var status = data;
+		success: function (obj) {
 			$("#enter").prop('disabled', false);
+			obj = JSON.parse(obj);
 
 			if (!name || !password) {
 				document.getElementById('error').innerHTML = 'Login or password is not complete';
 				return;
 			}
 
-			if (status == '401') {
+			if (obj.status == '401') {
 				document.getElementById('error').innerHTML = 'Wrong login or password';
 				return;
             }
-			if (status == '200') {
-				var href = window.location.href;
-				window.location.href = href + "account";
+			if (obj.status == '200') {
+				window.location.href = obj.url;
 				return;
 			}
 			
-			if (status == 'UpdatePassword') {
+			if (obj.status == 'UpdatePassword') {
 				let table = document.getElementById("loginForm");
 				table.style.display = 'none';
 				let newPassword = document.getElementById("passwordForm");
@@ -67,29 +66,28 @@ $("#updatepassword").on("click", function () {
 		beforeSend: function () {
 			$("#updatepassword").prop('disabled', true);
 		},
-		success: function (data) {
-			var status = data;
+		success: function (obj) {
 			$("#updatepassword").prop('disabled', false);
+			obj = JSON.parse(obj);
 
-			if (!newVal || !repeateVal) {
+			if (obj.status == '400') {
 				document.getElementById('errorPass').innerHTML = 'Please fill in both fields';
 				return;
 			}
 
-			if (newVal && repeateVal && newVal != repeateVal) {
+			if (obj.status == '401') {
 				document.getElementById('errorPass').innerHTML = 'Password mismatch';
 				return;
 			}
-
-			if (status == '200') {
+			
+			if (obj.status == '200') {
 				//TODO: затестить - удалить
 				let table = document.getElementById("loginForm");
 				table.style.display = 'block';
 				let newPassword = document.getElementById("passwordForm");
 				newPassword.style.display = 'none';
 
-				var href = window.location.href;
-				window.location.href = href + "account";
+				window.location.href = obj.url;
 				return;
 			}
 		},

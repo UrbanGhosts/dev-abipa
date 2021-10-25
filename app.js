@@ -12,6 +12,8 @@ app.set('view engine', 'html');
 app.use(cookieParser('MYY SECRET'));
 app.use(express.static(path.join(__dirname, 'assets')));
 
+var authData = { "UserName": "Supervisor", "UserPassword": "Supervisor2!!" };
+
 var port = process.env.PORT || 3000;
 server.listen(port, 'localhost', function () {
 	console.log('Express server started on port %s at %s', server.address().port, server.address().address);
@@ -28,10 +30,9 @@ app.get('/login', async function (req, res, next) {
 	var login = req.query.name;
 	var password = req.query.password;
 
-	if (login.length > 0 && password.length > 0) {
+	if (login && login.length > 0 && password && password.length > 0) {
 		//Авторизация в Creatio
 		if (!cookies) {
-			var authData = { "UserName": "Supervisor", "UserPassword": "Supervisor2!" };
 			const answer = await creatioRequest('https://ab01.terrasoft.ru/ServiceModel/AuthService.svc/Login', authData, 'POST');
 			console.log(answer);
 		}
@@ -50,7 +51,13 @@ app.get('/login', async function (req, res, next) {
 			}
 			res.cookie('CookieAbipaName', obj.cookie, options)
 		}
-		res.send(obj.Status);
+		
+		var answer = {
+			url: req.protocol + '://' + req.get('host') + "/account",
+			status: obj.Status
+		}
+		//res.send(obj.Status);
+		res.send(answer);
 	} else {
 		res.redirect('/');
 	}
@@ -64,23 +71,39 @@ app.get('/updatePassword', async function (req, res, next) {
 	}
 
 	var newVal = req.query.newVal;
-	if (newVal.length > 0) {
+	var repeateVal = req.query.repeateVal;
+
+	if (!newVal || !repeateVal) {
+		res.send("400");
+		return;
+	}
+
+	if (newVal && repeateVal && newVal != repeateVal) {
+		res.send("401");
+		return;
+	}
+
+	if (newVal.length > 0 && repeateVal.length > 0 && newVal == repeateVal) {
 
 		var Data = { "cookie": cookie, "password": newVal };
 		const result = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/UpdatePasswordSiteAbipa', Data, 'POST');
 		var obj = JSON.parse(result);
 		obj = JSON.parse(obj.UpdatePasswordSiteAbipaResult);
 
-		res.send(obj.Status);
+		var answer = {
+			url: req.protocol + '://' + req.get('host') + "/account",
+			status: obj.Status
+		}
+		//res.send(obj.Status);
+		res.send(answer);
 
 	} else {
-		res.redirect('/');
+		res.send("400");
 	}
 });
 
-app.get('/account', function (req, res, next) {
+app.get('/account', async function (req, res, next) {
 	var cookie = req.signedCookies['CookieAbipaName'];
-	console.log("cookie: " + cookie);
 
 	if (cookie) {
 		res.sendFile('/workpage.html', { root: __dirname });
@@ -89,8 +112,24 @@ app.get('/account', function (req, res, next) {
 	}
 });
 
+app.get('/getData', async function (req, res, next) {
+	var cookie = req.signedCookies['CookieAbipaName'];
 
+	if (cookie) {
+		var Data = { "cookie": cookie };
+		const result = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/GenerateTableData', Data, 'POST');
+		var obj = JSON.parse(result);
+		obj = JSON.parse(obj.GenerateTableDataResult);
 
+		if (obj.Status != "200") {
+			res.redirect('/');
+		} else {
+			res.send(result);
+        }
+	} else {
+		res.redirect('/');
+	}
+});
 
 app.get('/sendOrder', async function (req, res, next) {
 	var cookie = req.signedCookies['CookieAbipaName'];
@@ -107,7 +146,6 @@ app.get('/sendOrder', async function (req, res, next) {
 	
 	//Авторизация в Creatio
 	if (!cookies) {
-		var authData = { "UserName": "Supervisor", "UserPassword": "Supervisor2!" };
 		const answer = await creatioRequest('https://ab01.terrasoft.ru/ServiceModel/AuthService.svc/Login', authData, 'POST');
 		console.log(answer);
 	}
@@ -122,17 +160,14 @@ app.get('/sendOrder', async function (req, res, next) {
 		]};
 	
 	const result = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/qrtCreateOrder', Data, 'POST');
-	//var getData = 'testAnswer';
-	//const answer2 = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/GetOrdersValue?data=' + getData, Data, 'GET');
+	/*
+	var getData = 'testAnswer';
+	const answer2 = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/GetOrdersValue?data=' + getData, Data, 'GET');
+	*/
 	console.log(result);
 
 	res.redirect('/account');
 	
-});
-
-app.post('/addOrder', function (req, res) {
-	console.log(req);
-	res.redirect('/account');
 });
 
 module.exports = app;
