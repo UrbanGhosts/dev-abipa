@@ -15,6 +15,9 @@ $("#addOrder").on("click", function () {
 
 
 $("#createOrder").on("click", function () {
+	var preloader = document.getElementById('preloader');
+	preloader.style.display = 'block';
+
 	let addButton = document.getElementById("addOrder");
 	let createButton = document.getElementById("createOrder");
 	let table = document.getElementById("table");
@@ -149,6 +152,11 @@ tableForm = function (obj) {
 	
 	//Добавляем таблицу к div = table
 	table.appendChild(tbl);
+
+	var preloader = document.getElementById('preloader');
+	setTimeout(function () {
+		preloader.style.display = 'none';
+	}, 500);
 	return true;
 }
 

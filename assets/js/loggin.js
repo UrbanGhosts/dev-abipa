@@ -3,6 +3,7 @@ $("#enter").on("click", function () {
 	var name = $("#username").val();
 	var password = $("#password").val();
 	var message = $("#error").html();
+	
 	if (message) {
 		document.getElementById('error').innerHTML = '';
 	}
@@ -15,9 +16,14 @@ $("#enter").on("click", function () {
 		dataType: 'text',
 		beforeSend: function () {
 			$("#enter").prop('disabled', true);
+			$("#enter").css('background-color', 'gray');
+			$("#enter").css('color', '#6a6a68');
         },
 		success: function (obj) {
 			$("#enter").prop('disabled', false);
+			$("#enter").css('background-color', 'green');
+			$("#enter").css('color', '#fff');
+
 			obj = JSON.parse(obj);
 
 			if (!name || !password) {
@@ -44,6 +50,8 @@ $("#enter").on("click", function () {
 		error: function (data) {
 			window.console.log(data.status + ": " + data.statusText);
 			$("#enter").prop('disabled', false);
+			$("#enter").css('background-color', 'green');
+			$("#enter").css('color', '#fff');
 		},
 	});
 });
@@ -97,3 +105,11 @@ $("#updatepassword").on("click", function () {
 		},
 	});
 });
+
+document.body.onload = function () {
+	var preloader = document.getElementById('preloader');
+	setTimeout(function () {
+		preloader.style.display = 'none';
+	}, 500);
+	
+}
