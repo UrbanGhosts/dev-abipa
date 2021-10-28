@@ -23,13 +23,12 @@ $("#enter").on("click", function () {
 			$("#enter").prop('disabled', false);
 			$("#enter").css('background-color', 'green');
 			$("#enter").css('color', '#fff');
-
-			obj = JSON.parse(obj);
-
 			if (!name || !password) {
 				document.getElementById('error').innerHTML = 'Login or password is not complete';
 				return;
 			}
+
+			obj = JSON.parse(obj);
 
 			if (obj.status == '401') {
 				document.getElementById('error').innerHTML = 'Wrong login or password';
@@ -69,7 +68,7 @@ $("#updatepassword").on("click", function () {
 		url: '/updatePassword',
 		type: 'GET',
 		cache: false,
-		data: { 'newVal': newVal, 'repeateVal': repeateVal },
+		data: { 'newVal': newVal, 'repeateVal': repeateVal, 'isButton': true },
 		dataType: 'text',
 		beforeSend: function () {
 			$("#updatepassword").prop('disabled', true);
@@ -77,7 +76,7 @@ $("#updatepassword").on("click", function () {
 		success: function (obj) {
 			$("#updatepassword").prop('disabled', false);
 			obj = JSON.parse(obj);
-
+			window.console.log(obj);
 			if (obj.status == '400') {
 				document.getElementById('errorPass').innerHTML = 'Please fill in both fields';
 				return;

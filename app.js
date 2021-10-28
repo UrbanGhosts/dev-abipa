@@ -52,11 +52,10 @@ app.get('/login', async function (req, res, next) {
 			res.cookie('CookieAbipaName', obj.cookie, options)
 		}
 		
-		var answer = {
+		let answer = {
 			url: req.protocol + '://' + req.get('host') + "/account",
 			status: obj.Status
 		}
-		//res.send(obj.Status);
 		res.send(answer);
 	} else {
 		res.redirect('/');
@@ -65,7 +64,8 @@ app.get('/login', async function (req, res, next) {
 
 app.get('/updatePassword', async function (req, res, next) {
 	var cookie = req.signedCookies['CookieAbipaName'];
-	if (!cookie) {
+	var isButton = req.query.isButton;
+	if (!cookie || !isButton) {
 		res.redirect('/');
 		return;
 	}
@@ -74,12 +74,16 @@ app.get('/updatePassword', async function (req, res, next) {
 	var repeateVal = req.query.repeateVal;
 
 	if (!newVal || !repeateVal) {
-		res.send("400");
+		res.send({
+			status: "400"
+		});
 		return;
 	}
 
 	if (newVal && repeateVal && newVal != repeateVal) {
-		res.send("401");
+		res.send({
+			status: "401"
+		});
 		return;
 	}
 
@@ -114,8 +118,8 @@ app.get('/account', async function (req, res, next) {
 
 app.get('/getData', async function (req, res, next) {
 	var cookie = req.signedCookies['CookieAbipaName'];
-
-	if (cookie) {
+	var isButton = req.query.isButton;
+	if (cookie && isButton) {
 		var Data = { "cookie": cookie };
 		const result = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/GenerateTableData', Data, 'POST');
 		var obj = JSON.parse(result);
@@ -133,17 +137,28 @@ app.get('/getData', async function (req, res, next) {
 
 app.get('/sendOrder', async function (req, res, next) {
 	var cookie = req.signedCookies['CookieAbipaName'];
-	if (!cookie) {
+	var isButton = req.query.isButton;
+	if (!cookie && !isButton) {
 		res.redirect('/');
 		return;
+	} else if (!cookie && isButton) {
+		res.send({
+			url: req.protocol + '://' + req.get('host') + "/",
+			status: "401"
+		});
+		return;
+	} else if (cookie && !isButton) {
+		res.redirect('/account');
+		return;
 	}
+
 	var unit = req.query.unit;
 	var len = req.query.len;
 	var width = req.query.width;
 	var height = req.query.height;
 	var weight = req.query.weight;
 	var price = req.query.price;
-	
+
 	//Авторизация в Creatio
 	if (!cookies) {
 		const answer = await creatioRequest('https://ab01.terrasoft.ru/ServiceModel/AuthService.svc/Login', authData, 'POST');

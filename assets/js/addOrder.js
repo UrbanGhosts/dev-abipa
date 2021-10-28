@@ -53,6 +53,7 @@ $("#createOrder").on("click", function () {
 			'height': height,
 			'weight': weight,
 			'price': price,
+			'isButton': true,
 		},
 		contentType: 'application/json; charset=utf-8',
 		beforeSend: function () {
@@ -61,7 +62,13 @@ $("#createOrder").on("click", function () {
 		success: function (data) {
 			window.console.log(data);
 			$("#createOrder").prop('disabled', false);
-			load();
+
+			if (data.status == "401") {
+				window.location.href = data.url;
+				return;
+            }
+			
+			getDataTable();
 		},
 		error: function (data) {
 			window.console.log(data.status + ": " + data.statusText);
@@ -98,12 +105,27 @@ calculated = function(){
 	return true;
 }
 
+$("#yes").on("click", function () {
+	let button = document.getElementById("no");
+	button.checked = false;
+
+});
+
+$("#no").on("click", function () {
+	let button = document.getElementById("yes");
+	button.checked = false;
+
+});
 
 //Формирование таблицы Заявок
 tableForm = function (obj) {
+	var preloader = document.getElementById('preloader');
 	var data = obj.data.replace(/'/g, '"');
 	data = JSON.parse(data);
 	if (data == null) {
+		setTimeout(function () {
+			preloader.style.display = 'none';
+		}, 500);
 		return;
     }
 	//получаем и зануляем таблицу
@@ -153,7 +175,7 @@ tableForm = function (obj) {
 	//Добавляем таблицу к div = table
 	table.appendChild(tbl);
 
-	var preloader = document.getElementById('preloader');
+	
 	setTimeout(function () {
 		preloader.style.display = 'none';
 	}, 500);
@@ -162,29 +184,53 @@ tableForm = function (obj) {
 
 
 function load() {
+	getDataTable();
+}
+
+
+$("#counry-From").on("change", function () {
+
+	let button = document.getElementById("counry-From");
+	var opt = $('option[value="' + button.value + '"]');
+	var id = opt.length ? opt.attr('id') : '';
+	window.console.log("Id: " + id);
+});
+$("#counry-To").on("change", function () {
+
+	let button = document.getElementById("counry-To");
+	var opt = $('option[value="' + button.value + '"]');
+	var id = opt.length ? opt.attr('id') : '';
+	window.console.log("Id: " + id);
+});
+
+getDataTable = function () {
 	$.ajax({
 		url: '/getData',
 		type: 'GET',
 		cache: false,
+		data: { 'isButton': true },
 		contentType: 'application/json; charset=utf-8',
 		success: function (data) {
 			var obj = JSON.parse(data);
+			if (obj.status == "401") {
+				window.location.href = obj.url;
+				return;
+			}
 			obj = JSON.parse(obj.GenerateTableDataResult);
 
 			//Название компаний
 			let table = document.getElementById("t-comp4");
 			table.innerHTML = obj.companyName;
 
-			window.console.log(obj);
-			window.console.log(obj.data);
 			//Формируем таблицу
 			tableForm(obj);
-			
+
 		},
 		error: function (data) {
 			window.console.log(data.status + ": " + data.statusText);
 		},
 	});
+	return true;
 }
 window.onload = load;
 
