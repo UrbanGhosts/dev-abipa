@@ -185,8 +185,10 @@ tableForm = function (obj) {
 
 function load() {
 	getDataTable();
+	getDataCountry();
+	getZipCode();
 }
-
+window.onload = load;
 
 $("#counry-From").on("change", function () {
 
@@ -211,6 +213,9 @@ getDataTable = function () {
 		data: { 'isButton': true },
 		contentType: 'application/json; charset=utf-8',
 		success: function (data) {
+			if (!data) {
+				return;
+            }
 			var obj = JSON.parse(data);
 			if (obj.status == "401") {
 				window.location.href = obj.url;
@@ -232,5 +237,74 @@ getDataTable = function () {
 	});
 	return true;
 }
-window.onload = load;
 
+getDataCountry = function () {
+	$.ajax({
+		url: '/getDataCountry',
+		type: 'GET',
+		cache: false,
+		contentType: 'application/json; charset=utf-8',
+		success: function (data) {
+			//получаем и зануляем таблицу
+			let tableFrom = document.getElementById("counryFrom");
+			tableFrom.innerHTML = '';
+			let tableTo = document.getElementById("counryTo");
+			tableTo.innerHTML = '';
+			// creates a <table> element
+			var tblFrom = document.createElement("datalist");
+			var tblTo = document.createElement("datalist");
+
+			for (var i = 0; i < data[0].data.length - 1; i++) {
+				var obj = data[0].data[i + 1];
+
+				let cellFrom = document.createElement("option");
+				cellFrom.id = obj[0];
+				cellFrom.value = obj[1];
+				tblFrom.appendChild(cellFrom);
+
+				let cellTo = document.createElement("option");
+				cellTo.id = obj[0];
+				cellTo.value = obj[1];
+				tblTo.appendChild(cellTo);
+			}
+
+			tableFrom.appendChild(tblFrom);
+			tableTo.appendChild(tblTo);
+		},
+		error: function (data) {
+			window.console.log(data.status + ": " + data.statusText);
+		},
+	});
+	return true;
+}
+
+getZipCode = function () {
+	$.ajax({
+		url: '/getDataZipCode',
+		type: 'GET',
+		cache: false,
+		contentType: 'application/json; charset=utf-8',
+		success: function (data) {
+			//получаем и зануляем таблицу
+			let table = document.getElementById("zipFrom");
+			table.innerHTML = '';
+			// creates a <table> element
+			var tbl = document.createElement("datalist");
+			window.console.log(data[0].data[2]);
+
+			for (var i = 0; i < data[0].data.length; i++) {
+				var obj = data[0].data[i];
+
+				let cell = document.createElement("option");
+				cell.value = obj[1] + '/' + obj[2];
+				tbl.appendChild(cell);
+			}
+
+			table.appendChild(tbl);
+		},
+		error: function (data) {
+			window.console.log(data.status + ": " + data.statusText);
+		},
+	});
+	return true;
+}

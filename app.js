@@ -4,6 +4,7 @@ var https = require('https');
 const rp = require('request-promise');
 var path = require('Path');
 var cookieParser = require('cookie-parser');
+var xlsx = require('node-xlsx')
 var app = express();
 var server = http.createServer(app);
 
@@ -185,6 +186,17 @@ app.get('/sendOrder', async function (req, res, next) {
 	
 });
 
+app.get('/getDataCountry', function (req, res, next) {
+	var obj = xlsx.parse(__dirname + '/assets/data/country.xlsx'); // parses a file
+	res.send(obj);
+	//var obj = xlsx.parse(fs.readFileSync(__dirname + '/country.xlsx')); // parses a buffer
+});
+
+app.get('/getDataZipCode', function (req, res, next) {
+	var obj = xlsx.parse(__dirname + '/assets/data/ZipCode.xlsx'); // parses a file
+	res.send(obj);
+	//var obj = xlsx.parse(fs.readFileSync(__dirname + '/ZipCode.xlsx')); // parses a buffer
+});
 module.exports = app;
 
 var cookies;
