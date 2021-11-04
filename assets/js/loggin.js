@@ -1,5 +1,6 @@
 $("#enter").on("click", function () {
-	
+	var point = document.getElementById('point');
+
 	var name = $("#username").val();
 	var password = $("#password").val();
 	var message = $("#error").html();
@@ -16,13 +17,12 @@ $("#enter").on("click", function () {
 		dataType: 'text',
 		beforeSend: function () {
 			$("#enter").prop('disabled', true);
-			$("#enter").css('background-color', 'gray');
-			$("#enter").css('color', '#6a6a68');
+			point.style.display = 'block';
         },
 		success: function (obj) {
 			$("#enter").prop('disabled', false);
-			$("#enter").css('background-color', 'green');
-			$("#enter").css('color', '#fff');
+			point.style.display = 'none';
+
 			if (!name || !password) {
 				document.getElementById('error').innerHTML = 'Login or password is not complete';
 				return;
@@ -49,8 +49,7 @@ $("#enter").on("click", function () {
 		error: function (data) {
 			window.console.log(data.status + ": " + data.statusText);
 			$("#enter").prop('disabled', false);
-			$("#enter").css('background-color', 'green');
-			$("#enter").css('color', '#fff');
+			point.style.display = 'none';
 		},
 	});
 });

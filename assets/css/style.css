@@ -37,10 +37,11 @@ h1, h2, h3{
 }
 
 .logo {
-	width: 50%;
-	height: 10vh;
+	width: 70% !important;
+	height: 20% !important;
 	margin-top: 10px;
-	margin-left: 125px;
+	margin-left: 75px;
+	margin-bottom: 15px;
 	background: url("../images/abipa-logo.png") center no-repeat;
 	-webkit-background-size: cover;
 	background-size: cover;
@@ -110,11 +111,47 @@ input[type="text"], input[type="password"]{
 	animation: 1s spin infinite linear;
 }
 
+.point {
+	display: none;
+	width: 20px;
+	height: 20px;
+	background-color: white;
+	position: fixed;
+	margin-left: 70px;
+	margin-top: 17px;
+	border-radius: 50%;
+	z-index: 1;
+	animation: 2s pulse infinite linear;
+}
+
 @keyframes spin {
 	from {
 		transform: translate(-50%, -50%) rotate(0deg);
 	}
 	to {
 		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
+
+@keyframes pulse {
+	0% {
+		opacity: 1;
+		transform: scale(0);
+	}
+	25% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	50% {
+		transform: scale(0);
+		opacity: 1;
+	}
+	75% {
+		transform: scale(1);
+		opacity: 0;
+	}
+	100% {
+		transform: scale(0);
+		opacity: 0;
 	}
 }
