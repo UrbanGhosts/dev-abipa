@@ -54,7 +54,7 @@ app.get('/login', async function (req, res, next) {
 		}
 		
 		let answer = {
-			url: req.protocol + '://' + req.get('host') + "/account",
+			url: req.protocol + '://' + req.get('host') + "/order",
 			status: obj.Status
 		}
 		res.send(answer);
@@ -96,7 +96,7 @@ app.get('/updatePassword', async function (req, res, next) {
 		obj = JSON.parse(obj.UpdatePasswordSiteAbipaResult);
 
 		var answer = {
-			url: req.protocol + '://' + req.get('host') + "/account",
+			url: req.protocol + '://' + req.get('host') + "/order",
 			status: obj.Status
 		}
 		//res.send(obj.Status);
@@ -107,11 +107,30 @@ app.get('/updatePassword', async function (req, res, next) {
 	}
 });
 
-app.get('/account', async function (req, res, next) {
+app.get('/order', async function (req, res, next) {
 	var cookie = req.signedCookies['CookieAbipaName'];
 
 	if (cookie) {
 		res.sendFile('/workpage.html', { root: __dirname });
+	} else {
+		res.redirect('/');
+	}
+});
+
+app.get('/account', async function (req, res, next) {
+	var cookie = req.signedCookies['CookieAbipaName'];
+
+	if (cookie) {
+		res.sendFile('/account.html', { root: __dirname });
+	} else {
+		res.redirect('/');
+	}
+});
+
+app.get('/newOrder', async function (req, res, next) {
+	var cookie = req.signedCookies['CookieAbipaName'];
+	if (cookie) {
+		res.sendFile('/newOrder.html', { root: __dirname });
 	} else {
 		res.redirect('/');
 	}
@@ -148,9 +167,6 @@ app.get('/sendOrder', async function (req, res, next) {
 			status: "401"
 		});
 		return;
-	} else if (cookie && !isButton) {
-		res.redirect('/account');
-		return;
 	}
 
 	var unit = req.query.unit;
@@ -181,9 +197,10 @@ app.get('/sendOrder', async function (req, res, next) {
 	const answer2 = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/GetOrdersValue?data=' + getData, Data, 'GET');
 	*/
 	console.log(result);
-
-	res.redirect('/account');
-	
+	res.send({
+		url: req.protocol + '://' + req.get('host') + "/order",
+		status: "200"
+	});	
 });
 
 app.get('/getDataCountry', function (req, res, next) {

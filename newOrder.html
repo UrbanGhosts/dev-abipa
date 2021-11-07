@@ -1,0 +1,152 @@
+﻿﻿<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Abipa</title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="/css/style2.css" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+		<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	</head>
+	<body>
+		<div id="preloader" class="preloader">
+			<div id="loader" class="loader"></div>
+		</div>
+		<div class="sidebar">
+			<div class="logo_content">
+				<div class="logo">
+					<i class='bx bx-menu'></i>
+					<div class="logo_name">CLIENT PORTAL</div>
+				</div>
+			</div>
+			<ul class="nav_list">
+				<li>
+					<a href="/account">
+						<i class='bx bx-user'></i>
+						<span class="links_name">User setting</span>
+					</a>
+				</li>
+				<li>
+					<a href="/order">
+						<i class="bx bx-cart-alt"></i>
+						<span class="links_name">Order</span>
+					</a>
+				</li>
+			</ul>
+			<div class="log_out-back">
+				<a href="/">
+					<i class="bx bx-log-out" id="log_out"></i>
+				</a>
+			</div>
+			
+		</div>
+		
+		<div class="block">
+			<label id="t-comp3" class="t-label login-label-smallCaption">New order</label>
+
+			<div class="form-class" id="form-class">
+				<!-- Добавить сокрытие в появление формы -->
+				<div class="block-form-country">
+					<label id="t-comp6" class="t-block-form">Transportation route</label>
+				</div>
+				<div class="block-from">
+					<p>
+						<label id="t-comp7" class="t-block-description">From</label>
+					</p>
+					<input type="text" id="counry-From" list="counryFrom" placeholder="Origin Airport" style='padding-left:15px' />
+					<datalist id="counryFrom">
+					</datalist>
+				</div>
+				<div class="block-to">
+					<p>
+						<label id="t-comp8" class="t-block-description">To</label>
+					</p>
+					<input type="text" id="counry-To" list="counryTo" placeholder="Destination Airport" style='padding-left:15px' ; />
+					<datalist id="counryTo">
+					</datalist>
+				</div>
+
+				<div class="block-form-cargo" style="margin-top: -20px">
+					<label id="t-comp9" class="t-block-form">Cargo details</label>
+				</div>
+				<div class="block-form-units">
+					<div class="t-block-description">
+						<label id="t-comp10">Units</label>
+						<input type="number" id="unit" class="t-input-units" style='width: 4em;' name="unit" min="0" value="0">
+
+						<label id="t-comp11">Dimensions</label>
+						<input type="number" id="length" class="t-input-units" style='width: 85px; ' step=".01" min="0" name="length" placeholder="Length">
+						<input type="number" id="width" class="t-input-units" style='width: 85px; margin-left: -6px' step=".01" min="0" name="width" placeholder="Width">
+						<input type="number" id="height" class="t-input-units" style='width: 85px; margin-left: -6px' step=".01" min="0" name="height" placeholder="Height">
+						<select name="cm" id="cm" class="t-input-units" style='height: 35px; margin-left: -6px; width: auto; ' value='CM'>
+							<option value="CM">CM</option>
+							<option value="IN">IN</option>
+						</select>
+
+						<label id="t-comp12">Package Type</label>
+						<select name="box" id="box" class="t-input-units" style='height: 35px; padding-left: 10px; width: auto; top: 0.5px ' value='Boxes/Crates'>
+							<option value="Boxes/Crates">Boxes/Crates</option>
+							<option value="Pallets">Pallets</option>
+						</select>
+
+						<label id="t-comp13">Weight</label>
+						<input type="number" id="weight" class="t-input-units" step=".01" min="0" name="weight" value="0">
+						<select name="box" id="box" class="t-input-units" style='height: 35px; margin-left: -6px; width: auto;' value='KG/Unit'>
+							<option value="KG/Unit">KG/Unit</option>
+							<option value="LB/Unit">LB/Unit</option>
+						</select>
+
+						<label id="t-comp14">Price</label>
+						<input type="number" id="price" class="t-input-units" style='width: 4em;' name="price" value="0">
+					</div>
+				</div>
+
+				<div class="block-form-localCargo-global">
+					<div class="block-form-cargo">
+						<label id="t-comp15" class="t-block-form">Last\First Mile</label>
+					</div>
+
+					<div class="block-form-localCargo">
+						<p>
+							<label id="t-comp16" class="t-block-description">Zip Code</label>
+							<label id="t-comp17" class="t-block-description" style='padding-left:200px;'>Date of cargo readiness</label>
+						</p>
+						<input type="text" id="zip" list="zipFrom" class="t-input-units" style='padding-left: 10px; width: 190px;' />
+						<datalist id="zipFrom">
+						</datalist>
+						<input type="date" id="date" name="date" class="t-input-units" style='left: 85px; padding-left: 10px; width: 175px; height: 36px; margin-top: 0.5px'>
+					</div>
+				</div>
+
+				<div class="block-form-additional-global">
+					<div class="block-form-cargo">
+						<label id="t-comp15" class="t-block-form">Additional data</label>
+					</div>
+
+					<div class="block-form-localCargo">
+						<p>
+							<label id="t-comp18" class="t-block-description">Add customs brokerage services to your quote?</label>
+						</p>
+						<input type="radio" id="yes" name="yes" class="t-input-units" style='width: 15px; height: 15px;top: 2px;' value="yes">
+						<label for="yes">Yes, I need customs clearance</label>
+						<input type="checkbox" id="insurance" name="insurance" class="t-input-units" style='margin-left:25%; width: 15px; height: 15px;top: 2px;' value="yes">
+						<label for="insurance">Add insurance</label>
+						<p>
+							<input type="radio" id="no" name="no" class="t-input-units" style='width: 15px; height: 15px;top: 2px;'>
+							<label for="no">No, I have my own customs broker who will handle customs brokerage for me</label>
+						</p>
+					</div>
+				</div>
+				<!-- End Добавить сокрытие в появление формы -->
+				<div class="create-order-buttom">
+					<div id="point" class="point"></div>
+					<input type="button" id="createOrder" name="createOrder" value="Create">
+				</div>
+				
+			</div>
+
+		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script src="/js/newOrder.js"></script>
+	</body>
+</html>

@@ -5,20 +5,108 @@ body {
 	line-height: 1.6;
 	color: #333;
 
-	background-color: #ebeeef;
+	position: relative;
+	min-height: 100vh;
+	width: 100%;
 
-	//background: url("../images/background.jpg") center;
-	-webkit-background-size: cover;
+	background-color: #ebeeef;
 	background-size: cover;
 }
 
-
-.block-form-country {    
-	height:34px;
-	width:160px;
-	background: gray;        
+.create-order-buttom {
 	position: relative;
-	top: 10px;
+	margin-top: 10%;
+	margin-left: 50%;
+	transform: translate(0%, -50%);
+}
+
+.sidebar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 240px;
+	background: #11101d;
+	padding: 6px 14px;
+}
+
+.sidebar .logo_content .logo {
+	color: #fff;
+	display: flex;
+	height: 50px;
+	width: 100%;
+	align-items: center;
+}
+
+.logo_content .logo i{
+	font-size: 28px;
+	margin-right: 5px;
+}
+
+.logo_content .logo .logo_name {
+	font-size: 25px;
+	font-weight: 400;
+}
+
+.sidebar ul li {
+	position: relative;
+	font-size: 18px;
+	height: 50px;
+	width: 100%;
+	list-style: none;
+	margin: 0 -35px;
+	list-style: none;
+	line-height: 50px;
+}
+
+.sidebar ul li a {
+	color: #fff;
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	transition: all 0.4s ease;
+	border-radius: 4px;
+}
+
+.sidebar ul li a:hover {
+	background: #fff;
+	color: #11101d;
+}
+
+.sidebar ul li a i {
+	height: 50px;
+	min-width: 50px;
+	border-radius: 12px;
+	line-height: 50px;
+	text-align: center;
+
+}
+
+.sidebar .log_out-back {
+	position: absolute;
+	left: 50%;
+	width: 100%;
+	height: 80px;
+	bottom: 0px;
+	transform: translateX(-50%);
+	background-color: #1d1b31;
+}
+
+.sidebar #log_out{
+	position:absolute;
+	left: 50%;
+	top: 50%;
+	font-size: 30px;
+	transform: translate(-50%, -50%);
+	color: #fff;
+}
+
+.block-form-country {
+	height: 34px;
+	width: 160px;
+	background: gray;
+	position: relative;
+	margin-top: -50px;
 	margin-left: 10px;
 	border-radius: 5px 5px 5px 5px;
 }
@@ -52,27 +140,29 @@ body {
 }
 
 .form-class {
-	display: none;
+	padding-top: 80px;
 }
 
-.block-form-units {    
-	margin: 0 auto;
+.block-form-units {
+	display: inline-block;
 	position: relative;
-	top: -10px;
+	margin-top: -10px;
 	margin-left: 20px;
+	margin-right: 0.5vw;
+
 }
 
 .block-form-localCargo {    
-	margin: 0 auto;
 	position: relative;
-	top: -25px;
+	margin-top: -25px;
 	margin-left: 20px;
 }
-.block-form-localCargo-global {    
-	margin: 0 auto;
+
+.block-form-localCargo-global {
 	position: relative;
-	top: -340px;
-	margin-left: 700px;
+	margin-top: 50px;
+	margin-left: 0px;
+	margin-right: 25%;
 }
 
 .block-form-additional {    
@@ -81,27 +171,32 @@ body {
 	top: -10px;
 	margin-left: 20px;
 }
-.block-form-additional-global {    
-	margin: 0 auto;
+
+.block-form-additional-global {
 	position: relative;
-	top: -100px;
+	margin-top: 50px;
 	margin-left: 0px;
 }
 
 .t-input-units {
 	width: 65px;
 	height: 35px;
-	margin: 0px auto;
 	position: relative;
 	font-size: 1.2em;
-	padding-left: 15px;
+	padding-left: 10px;
+	top: 0.5px;
+	display: inline-block;
 }
 
 .block-to {    
-	margin: 0 auto;
 	position: relative;
 	top: -92px;
-	margin-left: 360px;
+	margin-left: 300px;
+}
+
+.dws-create {
+	position: relative;
+	left: 50%;
 }
 
 .t-block-description {
@@ -111,7 +206,6 @@ body {
 }
 
 .t-input-label {
-	display: none;
 	width: 1220px;
 	height: 30px;
 	margin: 20px auto;
@@ -119,34 +213,18 @@ body {
 	top: 10px;
 }
 
-.container {
-	background: white;
-	width: 1280px;
-	height: 50px;
-	/* тень под блоком */
-	box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
-	/* сглаживание углов блока */
-	border-radius: 0 0 15px 15px;
-	position: relative;
-	margin-top: -25px;
-	
-	margin-left: auto;
-    margin-right: auto;
-}
-
 .block {
 	background: white;
-	width: 1280px;
-	height: 800px;
 	/* тень под блоком */
 	box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
 	/* сглаживание углов блока */
-	border-radius: 5px 5px 5px 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
 	position: relative;
-	
-	margin-top: 25px;
-	margin-left: auto;
-    margin-right: auto;
+	min-height: 100vh;
+	margin-left: 275px;
+	margin-right: 0.5vw;
+	margin-top: -15px;
 }
 
 .login-label-smallCaption {
@@ -167,8 +245,8 @@ body {
 	text-align: right;
 	width: 40%;
 	font-size: 1.4em;
-	position: absolute;
-	top: 10px;
+	position: fixed;
+	top: 15px;
 	right: 50px;
 	color: black;
 }
@@ -209,10 +287,6 @@ td:first-child {
 	font-size: 14px;
 }
 
-.dws-create {
-	display: none;
-}
-
 input[id="addOrder"] {
 	padding: 13px 30px;
 	font-size: 15px;
@@ -221,9 +295,8 @@ input[id="addOrder"] {
 	border: none;
 	border-bottom: 4px solid #2ee640;
 	cursor: pointer;
-	margin: 0 auto;
 	position: relative;
-	top: 10px;
+	margin-top: 75px;
 	margin-left: 10px;
 }
 
@@ -279,5 +352,45 @@ input[id="counry-To"], [id="counry-From"] {
 
 	to {
 		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
+
+.point {
+	display: none;
+	width: 20px;
+	height: 20px;
+	background-color: white;
+	position: fixed;
+	margin-left: 80px;
+	margin-top: 22px;
+	border-radius: 50%;
+	z-index: 1;
+	animation: 2s pulse infinite linear;
+}
+
+@keyframes pulse {
+	0% {
+		opacity: 1;
+		transform: scale(0);
+	}
+
+	25% {
+		transform: scale(0.75);
+		opacity: 1;
+	}
+
+	50% {
+		transform: scale(0);
+		opacity: 1;
+	}
+
+	75% {
+		transform: scale(1);
+		opacity: 0;
+	}
+
+	100% {
+		transform: scale(0);
+		opacity: 0;
 	}
 }

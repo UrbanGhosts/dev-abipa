@@ -139,7 +139,7 @@ input[type="text"], input[type="password"]{
 		transform: scale(0);
 	}
 	25% {
-		transform: scale(1);
+		transform: scale(0.75);
 		opacity: 1;
 	}
 	50% {
