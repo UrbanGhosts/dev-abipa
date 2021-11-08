@@ -186,11 +186,22 @@ body {
 	padding-left: 10px;
 	top: 0.5px;
 	display: inline-block;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-top-width: 0px;
+	border-bottom-width: 1px;
+	border-bottom-color: gray;
+	border-bottom-style: dotted;
+	outline: none;
 }
-
-.block-to {    
+.t-input-units:focus {
+	border-bottom-color: dodgerblue;
+	border-bottom-style: solid;
+}
+.block-to {
+	margin: 0 auto;
 	position: relative;
-	top: -92px;
+	top: -90px;
 	margin-left: 300px;
 }
 
@@ -245,9 +256,9 @@ body {
 	text-align: right;
 	width: 40%;
 	font-size: 1.4em;
-	position: fixed;
-	top: 15px;
-	right: 50px;
+	position: absolute;
+	top: 10px;
+	right: 25px;
 	color: black;
 }
 
@@ -296,7 +307,7 @@ input[id="addOrder"] {
 	border-bottom: 4px solid #2ee640;
 	cursor: pointer;
 	position: relative;
-	margin-top: 75px;
+	margin-top: 25px;
 	margin-left: 10px;
 }
 
@@ -315,11 +326,26 @@ input[id="createOrder"] {
     margin-right: auto;
 }
 
-input[id="counry-To"], [id="counry-From"] {
+input[id="counry-To"], [id="counry-From"], [id="zip"], [id="date"] {
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-top-width: 0px;
+
+	border-bottom-width: 1px;
+	border-bottom-color: gray;
+	border-bottom-style: dotted;
+
+	outline: none;
+
 	padding: 10px 5px;
 	font-size: 18px;
-	border: solid 1px gray;//обводка
-	border-radius: 5px 5px 5px 5px;
+	text-overflow: ellipsis;
+	padding-left: 15px;
+}
+/*Обводка справочников, заменить на другой стиль для всех Input*/
+input[id="counry-To"]:focus, [id="counry-From"]:focus, [id="zip"]:focus, [id="date"]:focus {
+	border-bottom-color: dodgerblue;
+	border-bottom-style: solid;
 }
 
 .preloader {
