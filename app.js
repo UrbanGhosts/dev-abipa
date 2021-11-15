@@ -13,6 +13,7 @@ app.set('view engine', 'html');
 app.use(cookieParser('MYY SECRET'));
 app.use(express.static(path.join(__dirname, 'assets')));
 
+var site = "https://ab01.terrasoft.ru";
 var authData = { "UserName": "Supervisor", "UserPassword": "Supervisor2!!" };
 
 var port = process.env.PORT || 3000;
@@ -34,12 +35,12 @@ app.get('/login', async function (req, res, next) {
 	if (login && login.length > 0 && password && password.length > 0) {
 		//Авторизация в Creatio
 		if (!cookies) {
-			const answer = await creatioRequest('https://ab01.terrasoft.ru/ServiceModel/AuthService.svc/Login', authData, 'POST');
+			const answer = await creatioRequest(site + '/ServiceModel/AuthService.svc/Login', authData, 'POST');
 			console.log(answer);
 		}
 
 		var Data = { "login": login, "password": password };
-		const result = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/AuthorizationSiteAbipa', Data, 'POST');
+		const result = await creatioRequest(site + '/0/rest/qrtServiceSiteAbipa/AuthorizationSiteAbipa', Data, 'POST');
 		var obj = JSON.parse(result);
 		obj = JSON.parse(obj.AuthorizationSiteAbipaResult);
 		console.log(obj.Status + ": " + obj.cookie);
@@ -91,7 +92,7 @@ app.get('/updatePassword', async function (req, res, next) {
 	if (newVal.length > 0 && repeateVal.length > 0 && newVal == repeateVal) {
 
 		var Data = { "cookie": cookie, "password": newVal };
-		const result = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/UpdatePasswordSiteAbipa', Data, 'POST');
+		const result = await creatioRequest(site + '/0/rest/qrtServiceSiteAbipa/UpdatePasswordSiteAbipa', Data, 'POST');
 		var obj = JSON.parse(result);
 		obj = JSON.parse(obj.UpdatePasswordSiteAbipaResult);
 
@@ -103,7 +104,9 @@ app.get('/updatePassword', async function (req, res, next) {
 		res.send(answer);
 
 	} else {
-		res.send("400");
+		res.send({
+			status: "400"
+		});
 	}
 });
 
@@ -141,7 +144,7 @@ app.get('/getData', async function (req, res, next) {
 	var isButton = req.query.isButton;
 	if (cookie && isButton) {
 		var Data = { "cookie": cookie };
-		const result = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/GenerateTableData', Data, 'POST');
+		const result = await creatioRequest(site + '/0/rest/qrtServiceSiteAbipa/GenerateTableData', Data, 'POST');
 		var obj = JSON.parse(result);
 		obj = JSON.parse(obj.GenerateTableDataResult);
 
@@ -178,7 +181,7 @@ app.get('/sendOrder', async function (req, res, next) {
 
 	//Авторизация в Creatio
 	if (!cookies) {
-		const answer = await creatioRequest('https://ab01.terrasoft.ru/ServiceModel/AuthService.svc/Login', authData, 'POST');
+		const answer = await creatioRequest(site + '/ServiceModel/AuthService.svc/Login', authData, 'POST');
 		console.log(answer);
 	}
 
@@ -191,10 +194,10 @@ app.get('/sendOrder', async function (req, res, next) {
 			price,
 		]};
 	
-	const result = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/qrtCreateOrder', Data, 'POST');
+	const result = await creatioRequest(site + '/0/rest/qrtServiceSiteAbipa/qrtCreateOrder', Data, 'POST');
 	/*
 	var getData = 'testAnswer';
-	const answer2 = await creatioRequest('https://ab01.terrasoft.ru/0/rest/qrtServiceSiteAbipa/GetOrdersValue?data=' + getData, Data, 'GET');
+	const answer2 = await creatioRequest(site + '/0/rest/qrtServiceSiteAbipa/GetOrdersValue?data=' + getData, Data, 'GET');
 	*/
 	console.log(result);
 	res.send({
@@ -215,6 +218,41 @@ app.get('/getDataZipCode', function (req, res, next) {
 	//var obj = xlsx.parse(fs.readFileSync(__dirname + '/ZipCode.xlsx')); // parses a buffer
 });
 module.exports = app;
+
+app.get('/resetPassword', async function (req, res, next) {
+	var isButton = req.query.isButton;
+	console.log(isButton);
+	if (!isButton) {
+		res.redirect('/');
+		return;
+	}
+
+	var login = req.query.login;
+
+	if (!login) {
+		res.send({
+			status: "400"
+		});
+		return;
+	}
+
+	var Data = { "login": login };
+	const result = await creatioRequest(site + '/0/rest/qrtServiceSiteAbipa/ResetPasswordSiteAbipa', Data, 'POST');
+	var obj = JSON.parse(result);
+	obj = JSON.parse(obj.ResetPasswordSiteAbipaResult);
+
+	if (!obj|| !obj.Status) {
+		res.send({
+			status: "404"
+		});
+		return;
+    }
+
+	res.send({
+		status: obj.Status
+	});
+
+});
 
 var cookies;
 var BPMCSRF;

@@ -31,7 +31,7 @@
 
 					</div>
 
-					<a href="#">Forgot your password?</a>
+					<a href="#" id="resetPasswordMessage" onclick="resetPasswordMessage();">Forgot your password?</a>
 				</div>
 
 				<div class="dws-newPassword" id="passwordForm">
@@ -45,8 +45,18 @@
 					<div class="dws-submit">
 						<input type="submit" id="updatepassword" name="updatepassword" value="Enter">
 					</div>
+				</div>
 
-					<a href="#">Forgot your password?</a>
+				<div class="dws-newPassword" id="forgotForm">
+					<label id="t-comp7" class="t-label login-label-smallCaption">Enter your login</label>
+					<input type="text" id="forgotFormLogin" name="forgotFormLogin" placeholder="Enter login...">
+
+					<label id="resetErrorMessage" name="resetErrorMessage" class="t-label login-label-smallCaption" style='margin: 5px 0 0 0px; font-size: 1em; color: red;'></label>
+
+					<div class="dws-submit">
+						<div id="resetPoint" class="point"></div>
+						<input type="submit" id="resetPassword" name="resetPassword" value="Enter">
+					</div>
 				</div>
 			</form>
 		</div>

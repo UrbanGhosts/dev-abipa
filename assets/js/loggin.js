@@ -4,9 +4,9 @@ $("#enter").on("click", function () {
 	var name = $("#username").val();
 	var password = $("#password").val();
 	var message = $("#error").html();
-	
 	if (message) {
 		document.getElementById('error').innerHTML = '';
+		document.getElementById('error').style.color = "red";
 	}
 
 	$.ajax({
@@ -32,6 +32,8 @@ $("#enter").on("click", function () {
 
 			if (obj.status == '401') {
 				document.getElementById('error').innerHTML = 'Wrong login or password';
+				let reset = document.getElementById("resetPasswordMessage");
+				reset.style.display = 'block';
 				return;
             }
 			if (obj.status == '200') {
@@ -104,7 +106,70 @@ $("#updatepassword").on("click", function () {
 	});
 });
 
+resetPasswordMessage = function () {
+	let table = document.getElementById("loginForm");
+	table.style.display = 'none';
+	let newPassword = document.getElementById("forgotForm");
+	newPassword.style.display = 'block';
+}
+document.getElementById("resetPassword").addEventListener('click', function (e) {
+	var point = document.getElementById('resetPoint');
+	var login = $("#forgotFormLogin").val();
+	var message = $("#resetPasswordMessage").html();
+	if (message) {
+		document.getElementById('resetErrorMessage').innerHTML = '';
+	}
+	//ToDo: затестить показать окно без ajax запроса
+	$.ajax({
+		url: '/resetPassword',
+		type: 'GET',
+		cache: false,
+		data: { 'login': login, 'isButton': true },
+		dataType: 'text',
+		beforeSend: function () {
+			point.style.display = 'block';
+			$("#resetPassword").prop('disabled', true);
+		},
+		success: function (obj) {
+			$("#resetPassword").prop('disabled', false);
+			point.style.display = 'none';
+
+			obj = JSON.parse(obj);
+
+			if (!login) {
+				document.getElementById('resetErrorMessage').innerHTML = 'Login is not complete';
+				return;
+			}
+
+			if (obj.status == '404') {
+				document.getElementById('resetErrorMessage').innerHTML = 'Wrong login';
+				return;
+			}
+
+			if (obj.status == '200') {
+				let table = document.getElementById("loginForm");
+				table.style.display = 'block';
+				let newPassword = document.getElementById("forgotForm");
+				newPassword.style.display = 'none';
+
+				var doc = document.getElementById('error');
+				doc.innerHTML = 'Password reset';
+				doc.style.color = "green";
+
+				return;
+			}
+		},
+		error: function (data) {
+			window.console.log(data.status + ": " + data.statusText);
+			$("#resetPassword").prop('disabled', false);
+			point.style.display = 'none';
+		},
+	});
+});
 document.body.onload = function () {
+	let reset = document.getElementById("resetPasswordMessage");
+	reset.style.display = 'none';
+
 	var preloader = document.getElementById('preloader');
 	setTimeout(function () {
 		preloader.style.display = 'none';
