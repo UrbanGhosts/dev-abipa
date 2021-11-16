@@ -5,6 +5,8 @@ const rp = require('request-promise');
 var path = require('Path');
 var cookieParser = require('cookie-parser');
 var xlsx = require('node-xlsx')
+var bodyParser = require('body-parser');
+
 var app = express();
 var server = http.createServer(app);
 
@@ -12,6 +14,12 @@ app.set('view engine', 'html');
 
 app.use(cookieParser('MYY SECRET'));
 app.use(express.static(path.join(__dirname, 'assets')));
+app.use(bodyParser.raw({
+	type: 'application/octet-stream',
+	limit: '10mb'
+}));
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 var site = "https://ab01.terrasoft.ru";
 var authData = { "UserName": "Supervisor", "UserPassword": "Supervisor2!!" };
@@ -143,6 +151,12 @@ app.get('/getData', async function (req, res, next) {
 	var cookie = req.signedCookies['CookieAbipaName'];
 	var isButton = req.query.isButton;
 	if (cookie && isButton) {
+		//Авторизация в Creatio
+		if (!cookies) {
+			const answer = await creatioRequest(site + '/ServiceModel/AuthService.svc/Login', authData, 'POST');
+			console.log(answer);
+		}
+
 		var Data = { "cookie": cookie };
 		const result = await creatioRequest(site + '/0/rest/qrtServiceSiteAbipa/GenerateTableData', Data, 'POST');
 		var obj = JSON.parse(result);
@@ -250,6 +264,50 @@ app.get('/resetPassword', async function (req, res, next) {
 
 	res.send({
 		status: obj.Status
+	});
+
+});
+
+app.post('/updatePhoto', async function (req, res, next) {
+
+	var cookie = req.signedCookies['CookieAbipaName'];
+	if (!cookie || req.body.length == 0) {
+		res.send({
+			status: "401"
+		});
+		return;
+	}
+
+	//Авторизация в Creatio
+	if (!cookies) {
+		const answer = await creatioRequest(site + '/ServiceModel/AuthService.svc/Login', authData, 'POST');
+		console.log(answer);
+	}
+
+	var byte = [];
+	var dataString = req.body.toString();
+	dataString = dataString.split("&");
+
+	for (i = 0; i < dataString.length; i++) {
+		var bytes = dataString[i].split("=");
+		byte.push(bytes[1]);
+	}
+
+	var Data = { "cookie": cookie, "data": byte, "filename": "TestName" };
+	const result = await creatioRequest(site + '/0/rest/qrtServiceSiteAbipa/UpdatePhotoFromSite', Data, 'POST');
+	var obj = JSON.parse(result);
+	console.log(obj);
+
+	obj = JSON.parse(obj.UpdatePhotoFromSiteResult);
+	if (!obj || !obj.Status) {
+		res.send({
+			status: "404"
+		});
+		return;
+	}
+
+	res.send({
+		status: "200"
 	});
 
 });
