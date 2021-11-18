@@ -24,7 +24,12 @@ $("#uploadPhoto").change(function () {
 			url: '/updatePhoto',
 			type: 'POST',
 			cache: false,
-			data: view,
+			//data: view,
+			data: {
+				"file": view.toString(),
+				"isButton": true,
+				"filename": file.name,
+			},
 			contentType: 'application/octet-stream',
 			success: function (data) {
 				if (!data) {
@@ -33,7 +38,7 @@ $("#uploadPhoto").change(function () {
 				data = JSON.parse(JSON.stringify(data));
 
 				if (data && data.status == '200') {
-					updatePhotoName(file.name, data.id);
+					//updatePhotoName(file.name, data.id);
 				} else {
 					window.location.href = data.url;
                 }
@@ -62,40 +67,6 @@ updatePhotoProfile = function (file) {
 	reader.readAsDataURL(file);
 }
 
-updatePhotoName = function (file, id) {
-	
-	$.ajax({
-		url: '/updateFileData',
-		type: 'GET',
-		cache: false,
-		data: {
-			"id": id,
-			"filename": file,
-			"isButton": true
-		},
-		contentType: 'application/octet-stream',
-		success: function (data) {
-			if (!data) {
-				return;
-			}
-			data = JSON.parse(JSON.stringify(data));
-
-			if (data && data.status == '200') {
-				window.console.log("Done!!!");
-				return;
-			}
-			if (data && data.status == '401') {
-				window.location.href = data.url;
-				return;
-			}
-
-		},
-		error: function (data) {
-			window.console.log(data.status + ": " + data.statusText);
-		},
-	});
-}
-
 uploadForm.onmouseout = function (event) {
 	$("#uploadForm").css('color', 'black');
 };
@@ -120,17 +91,19 @@ $("#addFile").change(function () {
 
 	reader.onload = function (e) {
 		var rawData = e.target.result;
-		window.console.log(rawData.toString());
-
+		let view = new Uint8Array(rawData);
 		$.ajax({
 			url: '/addFile',
 			type: 'POST',
 			cache: false,
+			
 			data: {
+				"file": view.toString(),
 				"isButton": true,
-				"file": rawData,
-				
+				"filename": file.name,
 			},
+			
+			//data: view.toString(),
 			contentType: 'application/octet-stream',
 			contentLength: rawData.length,
 			success: function (data) {
@@ -146,5 +119,5 @@ $("#addFile").change(function () {
 			},
 		});
 	}
-	reader.readAsBinaryString(file);
+	reader.readAsArrayBuffer(file);
 });
