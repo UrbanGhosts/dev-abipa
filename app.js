@@ -14,6 +14,7 @@ app.set('view engine', 'html');
 
 app.use(cookieParser('MYY SECRET'));
 app.use(express.static(path.join(__dirname, 'assets')));
+
 //app.use(express.limit('2mb'));
 app.use(bodyParser.raw({
 	type: 'application/octet-stream',
@@ -369,6 +370,49 @@ app.post('/addFile', async function (req, res, next) {
 	res.send({
 		status: "200",
 		id: obj.Guid
+	});
+
+});
+
+app.get('/getDataFromCRM', async function (req, res, next) {
+	var cookie = req.signedCookies['CookieAbipaName'];
+	var isButton = req.query.isButton;
+	
+	if (!cookie && !isButton) {
+		res.redirect('/');
+		return;
+	} else if (!cookie && isButton) {
+		res.send({
+			url: req.protocol + '://' + req.get('host') + "/",
+			status: "401"
+		});
+		return;
+	}
+
+	//Авторизация в Creatio
+	if (!cookies) {
+		const answer = await creatioRequest(site + '/ServiceModel/AuthService.svc/Login', authData, 'POST');
+		console.log(answer);
+	}
+
+	var Data = { "cookie": cookie};
+	const result = await creatioRequest(site + '/0/rest/qrtServiceSiteAbipa/GetFileToSite', Data, 'POST');
+
+	var obj = JSON.parse(result);
+	var list = JSON.parse(obj.GetFileToSiteResult);
+	console.log(list.Size);
+
+	if (list.Size === 0) {
+		res.send({
+			url: req.protocol + '://' + req.get('host') + "/",
+			status: "404"
+		});
+		return;
+	}
+
+	res.send({
+		status: "200",
+		file: list.obj
 	});
 
 });

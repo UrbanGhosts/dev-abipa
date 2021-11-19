@@ -1,4 +1,6 @@
 ﻿document.body.onload = function () {
+	getDataFromCRM();
+
 	var profilePhoto = document.getElementById('profilePhoto');
 	profilePhoto.style.display = "none";
 
@@ -7,6 +9,34 @@
 		preloader.style.display = 'none';
 	}, 500);
 
+}
+
+getDataFromCRM = function () {
+	$.ajax({
+		url: '/getDataFromCRM',
+		type: 'GET',
+		cache: false,
+		data: {
+			"isButton": true,
+		},
+		contentType: 'application/json',
+		success: function (data) {
+			if (!data) {
+				return;
+			}
+			data = JSON.parse(JSON.stringify(data));
+
+			if (data && data.status == '200') {
+				downloadPhotoProfile(data.file);
+			} else {
+				window.location.href = data.url;
+			}
+
+		},
+		error: function (data) {
+			window.console.log(data.status + ": " + data.statusText);
+		},
+	});
 }
 
 $("#uploadPhoto").change(function () {
@@ -19,7 +49,9 @@ $("#uploadPhoto").change(function () {
 	reader.onload = function (e) {
 		var rawData = e.target.result;
 		let view = new Uint8Array(rawData);
-
+		window.console.log(view);
+		window.console.log(view[0] + "/" + view[view.length-1]);
+		window.console.log(view.length);
 		$.ajax({
 			url: '/updatePhoto',
 			type: 'POST',
@@ -65,6 +97,32 @@ updatePhotoProfile = function (file) {
 		profilePhoto.style.display = "block";
 	}
 	reader.readAsDataURL(file);
+}
+
+downloadPhotoProfile = function (file) {
+	var list = file.split(",");
+	//TODO: заценить что хранится до 27 ячейки
+	//узнать что в object в CRM
+
+	var arr = [];
+	for (var i = 0; i < list.length; i++) {
+		//Убираем первые 27 байтов и последний
+		if (i >= 27 && i != list.length-1) {
+			arr.push(list[i]);
+        }
+		
+	}
+	var data = new Uint8Array(arr);
+
+	var defaultPhoto = document.getElementById('defaultPhoto');
+	defaultPhoto.style.display = "none";
+
+	var profilePhoto = document.getElementById('profilePhoto');
+	profilePhoto.src = URL.createObjectURL(
+		new Blob([data.buffer], { type: 'image/png' })
+	);
+	profilePhoto.style.display = "block";
+	
 }
 
 uploadForm.onmouseout = function (event) {
