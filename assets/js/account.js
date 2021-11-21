@@ -28,8 +28,11 @@ getDataFromCRM = function () {
 
 			if (data && data.status == '200') {
 				downloadPhotoProfile(data.file);
-			} else {
+				return;
+			}
+			if (data && data.status == '401') {
 				window.location.href = data.url;
+				return;
 			}
 
 		},

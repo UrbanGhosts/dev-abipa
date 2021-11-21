@@ -395,24 +395,23 @@ app.get('/getDataFromCRM', async function (req, res, next) {
 		console.log(answer);
 	}
 
-	var Data = { "cookie": cookie};
+	var Data = { "cookie": cookie };
 	const result = await creatioRequest(site + '/0/rest/qrtServiceSiteAbipa/GetFileToSite', Data, 'POST');
 
 	var obj = JSON.parse(result);
 	var list = JSON.parse(obj.GetFileToSiteResult);
-	console.log(list.Size);
 
-	if (list.Size === 0) {
+	if (list.Status !== "200") {
 		res.send({
 			url: req.protocol + '://' + req.get('host') + "/",
-			status: "404"
+			status: list.Status
 		});
 		return;
 	}
 
 	res.send({
 		status: "200",
-		file: list.obj
+		file: list.bytes
 	});
 
 });
