@@ -1,14 +1,8 @@
 ﻿document.body.onload = function () {
-	getDataFromCRM();
-
 	var profilePhoto = document.getElementById('profilePhoto');
 	profilePhoto.style.display = "none";
 
-	var preloader = document.getElementById('preloader');
-	setTimeout(function () {
-		preloader.style.display = 'none';
-	}, 500);
-
+	getDataFromCRM();
 }
 
 getDataFromCRM = function () {
@@ -27,7 +21,18 @@ getDataFromCRM = function () {
 			data = JSON.parse(JSON.stringify(data));
 
 			if (data && data.status == '200') {
+				//Имя пользователя
+				let table = document.getElementById("t-comp4");
+				table.innerHTML = data.name;
+
+				//Формируем аватар
 				downloadPhotoProfile(data.file);
+
+				//Убираем индикатор загрузки
+				var preloader = document.getElementById('preloader');
+				setTimeout(function () {
+					preloader.style.display = 'none';
+				}, 500);
 				return;
 			}
 			if (data && data.status == '401') {
@@ -173,7 +178,11 @@ $("#addFile").change(function () {
 				}
 				data = JSON.parse(JSON.stringify(data));
 				window.console.log(data);
-
+				if (data && data.status == '200') {
+					//updatePhotoName(file.name, data.id);
+				} else {
+					window.location.href = data.url;
+				}
 			},
 			error: function (data) {
 				window.console.log(data.status + ": " + data.statusText);
